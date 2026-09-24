@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="eu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kimetz Sec | Cyber-Portafolioa</title>
+    <style>
+        /* =========================================
+           VARIABLES Y CONFIGURACIÓN GLOBAL
+           ========================================= */
+        :root {
+            --bg-base: #020617; /* Azul muy oscuro */
+            --glass-bg: rgba(30, 41, 59, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            
+            /* Colores Neón */
+            --neon-cyan: #06b6d4;
+            --neon-green: #10b981;
+            --neon-orange: #f59e0b;
+            --neon-purple: #8b5cf6;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        /* SCROLLBAR PERSONALIZADA */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg-base);
+            /* Fondo con malla radial cibernética */
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(6, 182, 212, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.15), transparent 25%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* =========================================
+           NAVBAR CRISTALINO
+           ========================================= */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: linear-gradient(to right, var(--neon-cyan), var(--neon-purple));
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            margin: 0;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover { color: var(--text-main); }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0;
+            width: 0%; height: 2px; background: var(--neon-cyan);
+            transition: width 0.3s ease; box-shadow: 0 0 10px var(--neon-cyan);
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* =========================================
+           CONTENIDO PRINCIPAL
+           ========================================= */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        section {
+            margin-bottom: 6rem;
+            padding-top: 3rem;
+            scroll-margin-top: 80px;
+        }
+
+        /* HERO SECTION */
+        .hero-box {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-box::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+        }
+
+        .hero-box h2 {
+            font-size: 2.8rem;
+            margin: 0 0 1rem 0;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: white;
+            text-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+        }
+
+        .hero-box p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* TITULOS DE SECCIÓN */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .section-title::before {
+            content: ''; display: block; width: 40px; height: 4px;
+            background: var(--neon-purple); border-radius: 2px;
+            box-shadow: 0 0 10px var(--neon-purple);
+        }
+
+        /* =========================================
+           GRID Y TARJETAS (ESTILO PANEL SOC)
+           ========================================= */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .term-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .term-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(6, 182, 212, 0.5);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.15);
+        }
+
+        .term-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 1rem;
+        }
+
+        .term-card h3 {
+            margin: 0;
+            font-size: 1.6rem;
+            color: var(--text-main);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .term-number {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--neon-cyan);
+            background: rgba(6, 182, 212, 0.1);
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+        }
+
+        .term-desc {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* =========================================
+           PANELES DE INFO (EZAUGARRIAK, ADIBIDEA, BABESTU)
+           ========================================= */
+        .info-panel {
+            margin-bottom: 1rem;
+            padding: 1rem 1.2rem;
+            border-radius: 8px;
+            background: rgba(15, 23, 42, 0.5);
+            border-left: 4px solid transparent;
+            font-size: 0.95rem;
+        }
+
+        /* Panel Azul (Características) */
+        .panel-ezaugarriak {
+            border-left-color: var(--neon-cyan);
+        }
+        .panel-ezaugarriak h4 { color: var(--neon-cyan); }
+
+        /* Panel Naranja (Ejemplo) */
+        .panel-adibidea {
+            border-left-color: var(--neon-orange);
+        }
+        .panel-adibidea h4 { color: var(--neon-orange); }
+
+        /* Panel Verde (Protección) */
+        .panel-babestu {
+            border-left-color: var(--neon-green);
+        }
+        .panel-babestu h4 { color: var(--neon-green); }
+
+        .info-panel h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-panel h4::before { content: '▹'; }
+
+        .info-panel ul {
+            margin: 0;
+            padding-left: 1.2rem;
+            color: #cbd5e1;
+        }
+        
+        .info-panel p {
+            margin: 0;
+            color: #cbd5e1;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 3rem;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            margin-top: 3rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .grid-container { grid-template-columns: 1fr; }
+            .hero-box h2 { font-size: 2rem; }
+            .navbar { padding: 1rem; flex-direction: column; gap: 1rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR PREMIUM -->
+    <nav class="navbar">
+        <h1>KIMETZ // SEC-SYSTEM</h1>
+        <ul class="nav-links">
+            <li><a href="#aurkezpena">Aurkezpena</a></li>
+            <li><a href="#hiztegia">Mehatxuen Datu-basea</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <!-- SARRERA / HERO SECTION -->
+        <section id="aurkezpena">
+            <div class="hero-box">
+                <h2>Segurtasuna & Erabilgarritasun Handia</h2>
+                <p>ASIR 2. Maila - Zibersegurtasuneko kontzeptuen, eraso bektoreen eta defentsa protokoloen portafolio teknikoa. Datu-base aktiboa.</p>
+            </div>
+        </section>
+
+        <!-- HIZTEGIA COMPLETADO CON ESTILO CIBERNÉTICO -->
+        <section id="hiztegia">
+            <h2 class="section-title">Malware eta Erasoen Datu-Basea</h2>
+
+            <div class="grid-container">
+
+                <!-- TERMINO 1: PHISHING -->
+                <div class="term-card">
+                    <div class="term-card-header">
+                        <h3>Phishing</h3>
+                        <span class="term-number">ID-01</span>
+                    </div>
+                    <p class="term-desc">Ingeniaritza sozialeko erasoa. Identitate faltsu bat erabiliz (bankua, enpresa ofiziala), erabiltzailea engainatzea dauka helburu, datu konfidentzialak eman ditzan.</p>
+                    
+                    <div class="info-panel panel-ezaugarriak">
+                        <h4>Ezaugarriak</h4>
+                        <ul>
+                            <li>Giza ahultasuna (beldurra edo urgentzia) ustiatzen du.</li>
+                            <li>Webgune ofizialen klonazio perfektuak erabiltzen ditu.</li>
+                            <li>Sistemen suebakiak (firewalls) alferrikakoak dira eraso honen aurrean.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-panel panel-adibidea">
+                        <h4>Adibide Praktikoa</h4>
+                        <p>Zure bankuaren izenean SMS bat heltzen jatzu: "Zure kontua blokeatu da segurtasun arazoengatik. Sakatu hemen desblokeatzeko". Estekan zure pasahitza jartzean, lapurtu egiten deutsuez.</p>
+                    </div>
+
+                    <div class="info-panel panel-babestu">
+                        <h4>Defentsa Protokoloa</h4>
+                        <p>Ez sakatu inoiz SMS edo mezuetako esteketan. Idatzi beti URL-a eskuz nabigatzailean eta egiaztatu igorlearen domeinu ofiziala. Aktibatu 2FA (Bi pausotako egiaztapena).</p>
+                    </div>
+                </div>
+
+                <!-- TERMINO 2: BIRUSA -->
+                <div class="term-card">
+                    <div class="term-card-header">
+                        <h3>Birusa (Biren erasoa)</h3>
+                        <span class="term-number">ID-02</span>
+                    </div>
+                    <p class="term-desc">Bere burua bikoizteko eta sistema baten fitxategi legitimoak infektatzeko gaitasuna duen kode gaiztoa, sistema ezengokortuz edo hondatuz.</p>
+                    
+                    <div class="info-panel panel-ezaugarriak">
+                        <h4>Ezaugarriak</h4>
+                        <ul>
+                            <li>Fitxategi exekutagarriei edo dokumentuei lotuta doa.</li>
+                            <li>Erabiltzailearen ekintza bat behar dau aktibatzeko (klik egitea).</li>
+                            <li>Sistemaren errendimendua asaldatzen dau.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-panel panel-adibidea">
+                        <h4>Adibide Praktikoa</h4>
+                        <p>Posta elektronikoz faktura bat dala uste dozun PDF edo Word bat deskargatzen dozu. Irekitzean, kodea askatzen da eta sistemako .exe fitxategi guztiak kutsatzen hasten da.</p>
+                    </div>
+
+                    <div class="info-panel panel-babestu">
+                        <h4>Defentsa Protokoloa</h4>
+                        <p>EDR edo Next-Gen Antibirus bat eduki martxan. Iturri ezezagunetako fitxategiak edo posta bidez jasotako eranskin susmagarriak ez exekutatu inoiz.</p>
+                    </div>
+                </div>
+
+                <!-- TERMINO 3: TROIARRA -->
+                <div class="term-card">
+                    <div class="term-card-header">
+                        <h3>Troiarra (Trojan)</h3>
+                        <span class="term-number">ID-03</span>
+                    </div>
+                    <p class="term-desc">Programa legitimo eta erabilgarri baten atzean ezkutatzen den malwarea. Erabiltzaileak berak instalatzen du sisteman engainatuta.</p>
+                    
+                    <div class="info-panel panel-ezaugarriak">
+                        <h4>Ezaugarriak</h4>
+                        <ul>
+                            <li>Ez du bere burua bikoizten birusak bezala.</li>
+                            <li>Software piratan, joko krakeatuetan edo doako tresnetan ezkutatzen da.</li>
+                            <li>Normalean sareko "Botnet" bati konektatzen dio zure ekipoa.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-panel panel-adibidea">
+                        <h4>Adibide Praktikoa</h4>
+                        <p>Ordainpeko programa baten "Crack-a" deskargatzen dozu. Programa primeran dabil, baina ezkutuan zure ordenagailuko ateak ireki deutsaz hacker bati, barrura sar dadin.</p>
+                    </div>
+
+                    <div class="info-panel panel-babestu">
+                        <h4>Defentsa Protokoloa</h4>
+                        <p>Softwarea garatzailearen webgune ofizialetik soilik deskargatu. Pirateria saihestu (erasoen %80a bide horretatik sartzen da). Administratzaile-baimenak mugatu.</p>
+                    </div>
+                </div>
+
+                <!-- TERMINO 4: BACKDOORS -->
+                <div class="term-card">
+                    <div class="term-card-header">
+                        <h3>Backdoorsak</h3>
+                        <span class="term-number">ID-04</span>
+                    </div>
+                    <p class="term-desc">Ohiko autentifikazio prozesuak (pasahitzak) saihesten dituen ezkutuko sarrera-mekanismoa. Urruneko kontrol osoa bermatzen du.</p>
+                    
+                    <div class="info-panel panel-ezaugarriak">
+                        <h4>Ezaugarriak</h4>
+                        <ul>
+                            <li>Garatzaileek akatsez utzi ditzakete, edo erasotzaileek sortu.</li>
+                            <li>Oso zailak dira detektatzeko trafiko normalaren moduan jokatzen dabelako.</li>
+                            <li>Pasahitzak aldatu arren, erasotzailea barruan jarraituko du.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-panel panel-adibidea">
+                        <h4>Adibide Praktikoa</h4>
+                        <p>Hacker bat zure web-zerbitzarian sartzen da ahultasun bat erabiliz. Arazoa konpondu arren, hacker-ak PHP fitxategi txiki bat itzi dau bertan, noiznahi pasahitzik barik sartzeko.</p>
+                    </div>
+
+                    <div class="info-panel panel-babestu">
+                        <h4>Defentsa Protokoloa</h4>
+                        <p>Sareko trafikoaren monitorizazio aurreratua (IDS/IPS) erabili. Fitxategien osotasun-eskanerrak (FIM) exekutatu, inork sistemako fitxategiak ezkutuan aldatu ez ditzan.</p>
+                    </div>
+                </div>
+
+                <!-- TERMINO 5: SPYWARE -->
+                <div class="term-card">
+                    <div class="term-card-header">
+                        <h3>Spywarea</h3>
+                        <span class="term-number">ID-05</span>
+                    </div>
+                    <p class="term-desc">Sisteman isilpean instalatzen den softwarea, erabiltzailearen informazio pertsonala, ohiturak eta datuak biltzeko baimenik gabe.</p>
+                    
+                    <div class="info-panel panel-ezaugarriak">
+                        <h4>Ezaugarriak</h4>
+                        <ul>
+                            <li>Zure pribatutasuna erasotzen du zuzenean.</li>
+                            <li>Bilaketa-historiala, mezuak eta mikrofonoa/kamera erabili ditzake.</li>
+                            <li>Ekipoa asko moteldu daiteke datuak etengabe bidaltzeagatik.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-panel panel-adibidea">
+                        <h4>Adibide Praktikoa</h4>
+                        <p>Internetetik nabigatzailearentzat luzapen bat (extension) jaisten dozu. Bertatik, <em>Keylogger</em> baten bidez teklatuan idazten dozun guztia hacker-ari bidaltzen jako testu-fitxategi batean.</p>
+                    </div>
+
+                    <div class="info-panel panel-babestu">
+                        <h4>Defentsa Protokoloa</h4>
+                        <p>Kamera estali erabiltzen ez denean. Baimenak ondo kudeatu sistema eragilean. Erabili pribatutasuna bermatzen duten nabigatzaileak eta ez instalatu plugin ezezagunik.</p>
+                    </div>
+                </div>
+
+                <!-- TERMINO 6: STEALERRAK -->
+                <div class="term-card">
+                    <div class="term-card-header">
+                        <h3>Stealerrak</h3>
+                        <span class="term-number">ID-06</span>
+                    </div>
+                    <p class="term-desc">Informazio kritikoa eta finantzarioa oso denbora gutxian automatikoki erauzteko eta exfiltratzeko espezializatutako malwarea.</p>
+                    
+                    <div class="info-panel panel-ezaugarriak">
+                        <h4>Ezaugarriak</h4>
+                        <ul>
+                            <li>Eraso "Kirurgikoa" da: Sartu, informazio zehatza kopiatu eta bidali.</li>
+                            <li>Nabigatzaileetan gordetako pasahitzak eta Cookiak daukiez jomugan.</li>
+                            <li>Kriptomoneta zorroak (Wallets) hustea da euren asmo nagusia.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-panel panel-adibidea">
+                        <h4>Adibide Praktikoa</h4>
+                        <p>"Redline" izeneko stealer batek ordenagailua infektatzen dau. Segundo batean, Google Chrome-n "gordetako pasahitz" guztiak eta irekita daukazuzan saioak lapurtzen dauz.</p>
+                    </div>
+
+                    <div class="info-panel panel-babestu">
+                        <h4>Defentsa Protokoloa</h4>
+                        <p>Inoiz ez gorde pasahitzik nabigatzailean bertan; erabili Pasahitz-Kudeatzaile bat (KeePass, Bitwarden). Kontu kritiko guztietan MFA (MFA / 2FA) ezinbestekoa da.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>[ KIMETZ ] // ASIR 2. Maila - Segurtasuna eta Erabilgarritasun Handia (2026)</p>
+    </footer>
+
+</body>
+
+</html>
