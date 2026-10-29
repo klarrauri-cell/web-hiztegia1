@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kimetz Sec | Cyber-Portafolioa</title>
     
-    <!-- FAVICON INCRUSTADO (escudo con candado, SVG en data URI: no necesita archivos externos) -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2306b6d4' d='M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5z'/%3E%3Crect x='8' y='10' width='8' height='6' rx='1' fill='%23020617'/%3E%3Cpath d='M9.5 10V8.5a2.5 2.5 0 0 1 5 0V10' fill='none' stroke='%23020617' stroke-width='1.5'/%3E%3C/svg%3E">
+    <!-- FAVICON INTEGRADO (Inyectado en Base64, sin archivos locales) -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2306b6d4'%3E%3Cpath d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z'/%3E%3Ccircle cx='12' cy='11' r='2' fill='%2310b981'/%3E%3C/svg%3E" type="image/svg+xml">
 
     <style>
         /* =========================================
@@ -36,7 +36,7 @@
         ::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
 
         body {
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: var(--bg-base);
             background-image: 
                 radial-gradient(circle at 15% 50%, rgba(6, 182, 212, 0.15), transparent 25%),
@@ -52,357 +52,216 @@
         }
 
         /* =========================================
-           NAVBAR CRISTALINO
+           NAVBAR
            ========================================= */
         .navbar {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--glass-border);
-            padding: 1rem 3rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem 1rem;
-            justify-content: space-between;
-            align-items: center;
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border); padding: 1rem 3rem;
+            display: flex; justify-content: space-between; align-items: center;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
-
         .navbar h1 {
-            margin: 0;
-            font-size: 1.4rem;
-            font-weight: 800;
-            letter-spacing: 1px;
+            margin: 0; font-size: 1.4rem; font-weight: 800; letter-spacing: 1px;
             background: linear-gradient(to right, var(--neon-cyan), var(--neon-purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            -webkit-background-clip: text; color: transparent;
         }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 1.5rem;
-            margin: 0;
+        .nav-links { list-style: none; display: flex; gap: 1.5rem; margin: 0; }
+        .nav-btn {
+            background: none; border: none; color: var(--text-muted); font-weight: 600;
+            font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; padding: 0.5rem 0; position: relative; transition: all 0.3s;
         }
-
-        .nav-links button {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            padding: 0.5rem 0;
-            position: relative;
-            transition: all 0.3s;
-            font-family: inherit;
+        .nav-btn:hover, .nav-btn.active { color: var(--text-main); }
+        .nav-btn::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0%; height: 2px;
+            background: var(--neon-cyan); transition: width 0.3s ease; box-shadow: 0 0 10px var(--neon-cyan);
         }
-
-        .nav-links button:hover, .nav-links button.active { 
-            color: var(--text-main); 
-        }
-
-        .nav-links button:focus-visible {
-            outline: 2px solid var(--neon-cyan);
-            outline-offset: 4px;
-        }
-
-        .nav-links button::after {
-            content: ''; position: absolute; bottom: -5px; left: 0;
-            width: 0%; height: 2px; background: var(--neon-cyan);
-            transition: width 0.3s ease; box-shadow: 0 0 10px var(--neon-cyan);
-        }
-        
-        .nav-links button:hover::after, .nav-links button.active::after { 
-            width: 100%; 
-        }
-
-        @media (max-width: 600px) {
-            .navbar { padding: 1rem; }
-            .nav-links { gap: 1rem; padding-left: 0; }
-        }
+        .nav-btn:hover::after, .nav-btn.active::after { width: 100%; }
 
         /* =========================================
-           CONTENIDO PRINCIPAL Y PESTAÑAS (TABS)
+           ESTRUCTURA GENERAL Y HERO
            ========================================= */
-        main {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 2rem;
-            flex-grow: 1;
-            width: 100%;
-        }
+        main { max-width: 1000px; margin: 0 auto; padding: 2rem; flex-grow: 1; width: 100%; }
+        .tab-content { display: none; animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.5s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* HERO SECTION */
         .hero-box {
-            text-align: center;
-            padding: 5rem 2rem;
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-            margin-top: 2rem;
+            text-align: center; padding: 5rem 2rem; background: var(--glass-bg);
+            backdrop-filter: blur(16px); border: 1px solid var(--glass-border);
+            border-radius: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            position: relative; overflow: hidden; margin-top: 2rem;
         }
-
         .hero-box::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
             background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
         }
+        .hero-box h2 { font-size: 2.8rem; margin: 0 0 1.5rem 0; font-weight: 900; text-transform: uppercase; color: white; text-shadow: 0 0 20px rgba(6, 182, 212, 0.4); }
+        .hero-box p { font-size: 1.15rem; color: var(--text-muted); max-width: 700px; margin: 0 auto; }
 
-        .hero-box h2 {
-            font-size: 2.8rem;
-            margin: 0 0 1.5rem 0;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: white;
-            text-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
-        }
+        .section-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 2.5rem; display: flex; align-items: center; gap: 15px; color: var(--text-main); }
+        .section-title::before { content: ''; display: block; width: 40px; height: 4px; background: var(--neon-purple); border-radius: 2px; box-shadow: 0 0 10px var(--neon-purple); }
 
-        .hero-box p {
-            font-size: 1.15rem;
-            color: var(--text-muted);
-            max-width: 700px;
-            margin: 0 auto;
-        }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
 
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin-bottom: 2.5rem;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: var(--text-main);
-        }
-        
-        .section-title::before {
-            content: ''; display: block; width: 40px; height: 4px;
-            background: var(--neon-purple); border-radius: 2px;
-            box-shadow: 0 0 10px var(--neon-purple);
-        }
-
-        /* GRID Y TARJETAS */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        /* TARJETA DESTACADA (UD3A1) */
-        .featured-card {
-            grid-column: 1 / -1;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 16px;
-            padding: 2.5rem;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.1);
-            margin-bottom: 2rem;
-        }
-        
-        .featured-card .term-card-header h3 {
-            color: var(--neon-red);
-            text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
-            font-size: 2rem;
-        }
-
-        /* TARJETA DE OPINIÓN PERSONAL (IRITZIA) */
-        .iritzia-card {
-            grid-column: 1 / -1;
-            background: rgba(139, 92, 246, 0.1);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-top: 1rem;
-            backdrop-filter: blur(10px);
-        }
-
-        .iritzia-card h3 {
-            color: var(--neon-purple);
-            font-size: 1.5rem;
-            margin: 0 0 1rem 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .iritzia-card p {
-            font-size: 1.05rem;
-            line-height: 1.7;
-            color: #e2e8f0;
-            margin: 0;
-        }
-
+        /* =========================================
+           TARJETAS DE MALWARE Y PANELES
+           ========================================= */
         .term-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s ease, border-color 0.3s ease;
-            display: flex;
-            flex-direction: column;
+            background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px;
+            padding: 2rem; backdrop-filter: blur(10px); transition: transform 0.3s ease, border-color 0.3s ease;
+            display: flex; flex-direction: column;
         }
-
-        .term-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(6, 182, 212, 0.5);
-            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.15);
+        .term-card:hover { transform: translateY(-5px); border-color: rgba(6, 182, 212, 0.5); box-shadow: 0 10px 30px rgba(6, 182, 212, 0.15); }
+        
+        .featured-card {
+            grid-column: 1 / -1; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 16px; padding: 2.5rem; backdrop-filter: blur(10px); margin-bottom: 2rem;
         }
+        .featured-card .term-card-header h3 { color: var(--neon-red); text-shadow: 0 0 10px rgba(239, 68, 68, 0.5); font-size: 2rem; }
 
-        .term-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid var(--glass-border);
-            padding-bottom: 1rem;
+        .term-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem; }
+        
+        .term-card-header h3 { 
+            margin: 0; font-size: 1.6rem; color: var(--text-main); text-transform: uppercase; 
+            display: flex; align-items: center; 
         }
+        
+        .term-number { font-family: monospace; font-size: 1.2rem; font-weight: bold; color: var(--neon-cyan); background: rgba(6, 182, 212, 0.1); padding: 0.3rem 0.6rem; border-radius: 6px; }
+        .term-desc { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 1.5rem; }
 
-        .term-card h3 {
-            margin: 0;
-            font-size: 1.6rem;
-            color: var(--text-main);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .term-number {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--neon-cyan);
-            background: rgba(6, 182, 212, 0.1);
-            padding: 0.3rem 0.6rem;
-            border-radius: 6px;
-        }
-
-        .term-desc {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-            margin-bottom: 1.5rem;
-        }
-
-        /* PANELES DE INFO */
-        .info-panel {
-            margin-bottom: 1rem;
-            padding: 1rem 1.2rem;
-            border-radius: 8px;
-            background: rgba(15, 23, 42, 0.5);
-            border-left: 4px solid transparent;
-            font-size: 0.95rem;
-        }
-
-        .panel-ezaugarriak { border-left-color: var(--neon-cyan); }
-        .panel-ezaugarriak h4 { color: var(--neon-cyan); }
-
-        .panel-kasua { border-left-color: var(--neon-orange); }
-        .panel-kasua h4 { color: var(--neon-orange); }
-
-        .panel-babestu { border-left-color: var(--neon-green); }
-        .panel-babestu h4 { color: var(--neon-green); }
-
-        .panel-alert { border-left-color: var(--neon-red); }
-        .panel-alert h4 { color: var(--neon-red); }
-
-        .info-panel h4 {
-            margin: 0 0 0.5rem 0;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
+        .info-panel { margin-bottom: 1rem; padding: 1rem 1.2rem; border-radius: 8px; background: rgba(15, 23, 42, 0.5); border-left: 4px solid transparent; font-size: 0.95rem; }
+        .panel-ezaugarriak { border-left-color: var(--neon-cyan); } .panel-ezaugarriak h4 { color: var(--neon-cyan); }
+        .panel-kasua { border-left-color: var(--neon-orange); } .panel-kasua h4 { color: var(--neon-orange); }
+        .panel-babestu { border-left-color: var(--neon-green); } .panel-babestu h4 { color: var(--neon-green); }
+        .panel-alert { border-left-color: var(--neon-red); } .panel-alert h4 { color: var(--neon-red); }
+        
+        .info-panel h4 { margin: 0 0 0.5rem 0; font-size: 0.85rem; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
         .info-panel h4::before { content: '▹'; }
         .info-panel ul { margin: 0; padding-left: 1.2rem; color: #cbd5e1; }
         .info-panel p { margin: 0; color: #cbd5e1; }
 
-        /* ENLACES CASOS REALES */
         .case-link {
-            display: inline-block;
-            margin-top: 12px;
-            color: var(--neon-orange);
-            text-decoration: none;
-            font-size: 0.85rem;
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            padding: 6px 12px;
-            border-radius: 4px;
-            transition: all 0.3s;
-            background: rgba(245, 158, 11, 0.05);
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: bold;
+            display: inline-block; margin-top: 12px; color: var(--neon-orange); text-decoration: none;
+            font-size: 0.85rem; border: 1px solid rgba(245, 158, 11, 0.4); padding: 6px 12px; border-radius: 4px;
+            transition: all 0.3s; background: rgba(245, 158, 11, 0.05); font-weight: bold;
         }
+        .case-link:hover { background: var(--neon-orange); color: var(--bg-base); box-shadow: 0 0 10px rgba(245, 158, 11, 0.5); }
+
+        /* =========================================
+           ICONOS SVG INTEGRADOS (NUEVO DISEÑO PRO)
+           ========================================= */
+        .term-icon {
+            width: 28px; height: 28px; margin-right: 12px;
+            stroke: var(--neon-cyan); stroke-width: 1.5;
+            stroke-linecap: round; stroke-linejoin: round;
+            fill: none; filter: drop-shadow(0 0 5px rgba(6, 182, 212, 0.5));
+        }
+        .featured-card .term-icon { stroke: var(--neon-red); filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.5)); width: 34px; height: 34px; }
         
-        .case-link:hover {
-            background: var(--neon-orange);
-            color: var(--bg-base);
-            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        .cia-icon {
+            width: 18px; height: 18px; stroke: var(--text-muted);
+            stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none;
         }
 
-        footer {
-            text-align: center;
-            padding: 2rem;
-            border-top: 1px solid var(--glass-border);
-            color: var(--text-muted);
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
-            margin-top: auto; 
+        /* =========================================
+           SISTEMA ACORDEÓN PRO
+           ========================================= */
+        .acc-container {
+            margin-top: 1.5rem; border: 1px solid var(--glass-border); border-radius: 10px;
+            background: rgba(15, 23, 42, 0.4); transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
         }
+        .acc-container.active-acc {
+            background: rgba(15, 23, 42, 0.8); border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.1);
+        }
+
+        .acc-trigger {
+            width: 100%; display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 1.2rem; background: rgba(139, 92, 246, 0.05); border: none;
+            color: var(--neon-purple); font-weight: bold; font-size: 1rem; cursor: pointer;
+            border-radius: 10px; transition: background 0.3s, border-radius 0.3s; font-family: inherit;
+        }
+        .acc-trigger:hover { background: rgba(139, 92, 246, 0.15); }
+        .acc-trigger[aria-expanded="true"] { border-bottom-left-radius: 0; border-bottom-right-radius: 0; background: rgba(139, 92, 246, 0.15); }
+
+        .chevron { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); color: var(--text-muted); width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2;}
+        .acc-trigger[aria-expanded="true"] .chevron { transform: rotate(-180deg); color: var(--neon-purple); }
+
+        .acc-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .acc-panel.open { grid-template-rows: 1fr; }
+        .acc-inner { overflow: hidden; padding: 0 1.2rem; opacity: 0; transition: padding 0.4s ease, opacity 0.4s ease; }
+        .acc-panel.open .acc-inner { padding: 1rem 1.2rem 1.2rem 1.2rem; opacity: 1; }
+
+        .prin-item {
+            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 3px solid transparent; border-radius: 6px; padding: 1rem;
+            display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.8rem;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+        .prin-item:last-child { margin-bottom: 0; }
+        .prin-item:hover { background: rgba(255, 255, 255, 0.04); transform: translateX(4px); }
+
+        .status-bermatua { border-left-color: #10b981; }
+        .status-arriskuan { border-left-color: #f59e0b; }
+        .status-hautsita { border-left-color: #ef4444; }
+
+        .prin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem; }
+        .prin-title { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--text-main); font-size: 0.95rem; }
+        .prin-item p { margin: 0; font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+
+        .badge { padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; border: 1px solid; }
+        .badge-bermatua { background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: #059669; }
+        .badge-arriskuan { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-color: #d97706; }
+        .badge-hautsita { background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: #dc2626; }
+
+        .iritzia-card {
+            grid-column: 1 / -1; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px; padding: 2rem; margin-top: 1rem; backdrop-filter: blur(10px);
+        }
+        .iritzia-card h3 { color: var(--neon-purple); font-size: 1.5rem; margin: 0 0 1rem 0; display: flex; align-items: center; gap: 10px; }
+        .iritzia-card p { font-size: 1.05rem; line-height: 1.7; color: #e2e8f0; margin: 0; }
+
+        footer { text-align: center; padding: 2rem; border-top: 1px solid var(--glass-border); color: var(--text-muted); font-size: 0.9rem; margin-top: auto; }
     </style>
 </head>
 
 <body>
 
-    <!-- NAVBAR PREMIUM CON BOTONES -->
     <nav class="navbar">
         <h1>KIMETZ // SEC-SYSTEM</h1>
         <ul class="nav-links">
-            <li><button class="nav-btn active" onclick="showTab('aurkezpena', this)">Aurkezpena</button></li>
-            <li><button class="nav-btn" onclick="showTab('ud1a1', this)">UD1</button></li>
-            <li><button class="nav-btn" onclick="showTab('ud2a4', this)">UD2</button></li>
-            <li><button class="nav-btn" onclick="showTab('ud3a1', this)">UD3</button></li>
+            <li><button class="nav-btn active" data-target="aurkezpena">Aurkezpena</button></li>
+            <li><button class="nav-btn" data-target="ud1a1">UD1</button></li>
+            <li><button class="nav-btn" data-target="ud2a4">UD2</button></li>
+            <li><button class="nav-btn" data-target="ud3a1">UD3</button></li>
         </ul>
     </nav>
 
     <main>
-
         <!-- =====================================
-             PESTAÑA 0: SARRERA / HERO SECTION 
+             PESTAÑA 0: SARRERA 
              ===================================== -->
         <section id="aurkezpena" class="tab-content" style="display: block;">
             <div class="hero-box">
                 <h2>Segurtasuna & Erabilgarritasun Handia</h2>
-                <p>ASIR 2. Maila - Zibersegurtasuneko kontzeptuen, eraso bektoreen eta defentsa protokoloen portafolio teknikoa. Erakunde ofizialen eta zibersegurtasun-enpresa ezagunen iturriekin (INCIBE, OWASP, ESET, Kaspersky...).</p>
+                <p>ASIR 2. Maila - Zibersegurtasuneko kontzeptuen, eraso bektoreen eta CIA printzipioen auditoria tekniko aurreratua. Esteka guztiak <strong>Wikipedia EN</strong> eta <strong>MITRE ATT&CK</strong> iturri ofizialetara zuzenduta daude.</p>
                 <p style="margin-top: 2rem; font-size: 0.95rem; color: var(--neon-cyan);">
                     ↑ Erabili goiko menua unitateetan zehar nabigatzeko ↑
                 </p>
             </div>
         </section>
+
+        <!-- MACRO SVG DEFINICIONES PARA LA TRIADA CIA -->
+        <!-- Estos SVG se usarán dentro de los menús desplegables -->
+        <svg style="display:none;">
+            <symbol id="icon-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+            <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+            <symbol id="icon-server" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></symbol>
+            <symbol id="icon-key" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></symbol>
+            <symbol id="icon-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></symbol>
+            <symbol id="icon-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></symbol>
+        </svg>
 
         <!-- =====================================
              PESTAÑA 1: SECCIÓN UD1A1
@@ -411,136 +270,213 @@
             <h2 class="section-title">UD1A1. Malware Oinarrizko Hiztegia</h2>
             <div class="grid-container">
 
+                <!-- 1. PHISHING -->
                 <div class="term-card">
                     <div class="term-card-header">
-                        <h3>Phishinga</h3>
+                        <h3>
+                            <!-- Icono Phishing: Máscara Hacker -->
+                            <svg class="term-icon" viewBox="0 0 24 24"><path d="M22 11v1a9 9 0 0 1-9 9 9 9 0 0 1-9-9v-1c0-3.87 3.13-7 7-7h4c3.87 0 7 3.13 7 7z"/><circle cx="8" cy="11" r="1"/><circle cx="16" cy="11" r="1"/></svg>
+                            Phishinga
+                        </h3>
                         <span class="term-number">ID-01</span>
                     </div>
                     <p class="term-desc">Ingeniaritza sozialeko erasoa. Identitate faltsu bat erabiliz erabiltzailea engainatzea dauka helburu.</p>
-                    <div class="info-panel panel-ezaugarriak">
-                        <h4>Ezaugarriak</h4>
-                        <ul><li>Giza ahultasuna (beldurra edo urgentzia) ustiatzen du.</li></ul>
-                    </div>
-                    <div class="info-panel panel-kasua">
-                        <h4>Benetako Kasua (Google/Facebook 2013-2015)</h4>
-                        <p>Evaldas Rimasauskas lituaniarrak 100 milioi dolar baino gehiago lapurtu zituen faktura faltsuak bidaliz hornitzaile baten izenean.</p>
-                        <a href="https://www.xataka.com.co/empresas-y-economia/este-hombre-le-robo-122-millones-dolares-a-facebook-google-usando-facturas-falsas-se-creyeron-todas" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Albiste teknikoa (Xataka)</a>
-                    </div>
-                    <div class="info-panel panel-babestu">
-                        <h4>Defentsa Protokoloa</h4>
-                        <p>Egiaztatu igorlearen domeinua. Ez sartu pasahitzik esteka susmagarrietan. Aktibatu MFA.</p>
+                    
+                    <div class="info-panel panel-ezaugarriak"><h4>Ezaugarriak</h4><ul><li>Giza ahultasuna (beldurra edo urgentzia) ustiatzen du.</li></ul></div>
+                    <div class="info-panel panel-kasua"><h4>Benetako Kasua (Google/Facebook)</h4><p>Evaldas Rimasauskas lituaniarrak 100 milioi dolar lapurtu zituen faktura faltsuak bidaliz.</p>
+                    <a href="https://en.wikipedia.org/wiki/Phishing" target="_blank" class="case-link">🔗 Phishing (Wikipedia EN)</a></div>
+                    <div class="info-panel panel-babestu"><h4>Defentsa Protokoloa</h4><p>Egiaztatu igorlearen domeinua. Aktibatu MFA.</p></div>
+                    
+                    <div class="acc-container">
+                        <button class="acc-trigger" aria-expanded="false">
+                            <span>🛡️ Segurtasun-Printzipioak (CIA)</span>
+                            <svg class="chevron"><use href="#icon-chevron"/></svg>
+                        </button>
+                        <div class="acc-panel">
+                            <div class="acc-inner">
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-eye"/></svg>Konfidentzialtasuna</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Biktimaren datu pribatuak eta pasahitzak zuzenean lapurtzen dira.</p></div>
+                                <div class="prin-item status-bermatua"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-shield"/></svg>Osotasuna</div><span class="badge badge-bermatua">🟢 Bermatua</span></div><p>Ez ditu erabiltzailearen fitxategiak edo sistemako datuak aldatzen.</p></div>
+                                <div class="prin-item status-bermatua"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-server"/></svg>Eskuragarritasuna</div><span class="badge badge-bermatua">🟢 Bermatua</span></div><p>Sistemak eta webguneak martxan jarraitzen dute erasoan zehar.</p></div>
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-key"/></svg>Autentifikazioa</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Erasotzaileak plataforma legitimo baten nortasuna suplantatzen du.</p></div>
+                                <div class="prin-item status-arriskuan"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-file"/></svg>Ez-gaitetzea</div><span class="badge badge-arriskuan">🟡 Arriskuan</span></div><p>Biktimak bere kabuz bidaltzen ditu datuak, baina engainatuta.</p></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <!-- 2. BIRUSA -->
                 <div class="term-card">
                     <div class="term-card-header">
-                        <h3>Birusen erasoa</h3>
+                        <h3>
+                            <!-- Icono Birusa: Bicho/Bug -->
+                            <svg class="term-icon" viewBox="0 0 24 24"><rect x="8" y="6" width="8" height="14" rx="4"/><path d="M6 10h2"/><path d="M6 14h2"/><path d="M6 18h2"/><path d="M16 10h2"/><path d="M16 14h2"/><path d="M16 18h2"/><path d="M9 6V4a3 3 0 0 1 6 0v2"/></svg>
+                            Biren erasoa
+                        </h3>
                         <span class="term-number">ID-02</span>
                     </div>
                     <p class="term-desc">Bere burua bikoizteko eta sistema baten fitxategi legitimoak infektatzeko gaitasuna duen kode gaiztoa.</p>
-                    <div class="info-panel panel-ezaugarriak">
-                        <h4>Ezaugarriak</h4>
-                        <ul><li>Erabiltzailearen ekintza bat behar dau aktibatzeko (adib. klik egitea).</li></ul>
-                    </div>
-                    <div class="info-panel panel-kasua">
-                        <h4>Benetako Kasua (ILOVEYOU 2000)</h4>
-                        <p>"I love you" zioen mezu batekin heltzen zen. Irekitzean, sistemako fitxategiak gainidazten zituen.</p>
-                        <a href="https://www.sophos.com/es-es/blog/iloveyou-the-love-bug-virus-20-years-on-could-it-happen-again" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Analisi teknikoa (Sophos)</a>
-                    </div>
-                    <div class="info-panel panel-babestu">
-                        <h4>Defentsa Protokoloa</h4>
-                        <p>EDR edo Next-Gen Antibirus bat eduki martxan. Ez ireki posta bidezko eranskin ezezagunak.</p>
+                    
+                    <div class="info-panel panel-ezaugarriak"><h4>Ezaugarriak</h4><ul><li>Erabiltzailearen ekintza bat behar dau aktibatzeko.</li></ul></div>
+                    <div class="info-panel panel-kasua"><h4>Benetako Kasua (ILOVEYOU 2000)</h4><p>"I love you" zioen mezu batekin heltzen zen. Sistemako fitxategiak gainidazten zituen.</p>
+                    <a href="https://en.wikipedia.org/wiki/ILOVEYOU" target="_blank" class="case-link">🔗 ILOVEYOU Virus (Wikipedia EN)</a></div>
+                    <div class="info-panel panel-babestu"><h4>Defentsa Protokoloa</h4><p>EDR edo Next-Gen Antibirus bat eduki martxan.</p></div>
+                    
+                    <div class="acc-container">
+                        <button class="acc-trigger" aria-expanded="false">
+                            <span>🛡️ Segurtasun-Printzipioak (CIA)</span>
+                            <svg class="chevron"><use href="#icon-chevron"/></svg>
+                        </button>
+                        <div class="acc-panel">
+                            <div class="acc-inner">
+                                <div class="prin-item status-bermatua"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-eye"/></svg>Konfidentzialtasuna</div><span class="badge badge-bermatua">🟢 Bermatua</span></div><p>Helburu nagusia ez da informazioa lapurtzea, suntsitzea baizik.</p></div>
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-shield"/></svg>Osotasuna</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Sistemako fitxategi legitimoak kutsatu eta gainidazten ditu.</p></div>
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-server"/></svg>Eskuragarritasuna</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Ordenagailua guztiz moteldu edo erabiltezin utz dezake bikoiztean.</p></div>
+                                <div class="prin-item status-bermatua"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-key"/></svg>Autentifikazioa</div><span class="badge badge-bermatua">🟢 Bermatua</span></div><p>Ez du sarbide-kontrolak edo pasahitz-sistemak hausten zuzenean.</p></div>
+                                <div class="prin-item status-bermatua"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-file"/></svg>Ez-gaitetzea</div><span class="badge badge-bermatua">🟢 Bermatua</span></div><p>Ez da inoren identitatea ordezkatzen sareko ekintzetarako.</p></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <!-- 3. TROIARRA -->
                 <div class="term-card">
                     <div class="term-card-header">
-                        <h3>Troiarra</h3>
+                        <h3>
+                            <!-- Icono Troiarra: Regalo / Caja -->
+                            <svg class="term-icon" viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+                            Troiarra
+                        </h3>
                         <span class="term-number">ID-03</span>
                     </div>
                     <p class="term-desc">Programa legitimo eta erabilgarri baten atzean ezkutatzen den malwarea.</p>
-                    <div class="info-panel panel-ezaugarriak">
-                        <h4>Ezaugarriak</h4>
-                        <ul><li>Software piratan, krakeatuetan edo posta-eranskinetan ezkutatzen da sistemako ateak irekitzeko.</li></ul>
-                    </div>
-                    <div class="info-panel panel-kasua">
-                        <h4>Benetako Kasua (Emotet)</h4>
-                        <p>Bankuko datuak lapurtzeko sortu zen, baina geroago erakundeetara Ransomwarea sartzeko sarrera saldu zuen.</p>
-                        <a href="https://www.incibe.es/incibe-cert/blog/emotet-caracteristicas-y-funcionamiento" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Txostena (INCIBE-CERT)</a>
-                    </div>
-                    <div class="info-panel panel-babestu">
-                        <h4>Defentsa Protokoloa</h4>
-                        <p>Softwarea webgune ofizialetatik soilik deskargatu eta pirateria saihestu.</p>
+                    
+                    <div class="info-panel panel-ezaugarriak"><h4>Ezaugarriak</h4><ul><li>Software piratan ezkutatzen da sistemako ateak irekitzeko.</li></ul></div>
+                    <div class="info-panel panel-kasua"><h4>Benetako Kasua (Emotet)</h4><p>Bankuko datuak lapurtzeko sortu zen, gerora MaaS bihurtuz.</p>
+                    <a href="https://attack.mitre.org/software/S0367/" target="_blank" class="case-link">🔗 Emotet (MITRE ATT&CK)</a></div>
+                    <div class="info-panel panel-babestu"><h4>Defentsa Protokoloa</h4><p>Softwarea ofizialki deskargatu eta pirateria saihestu.</p></div>
+
+                    <div class="acc-container">
+                        <button class="acc-trigger" aria-expanded="false">
+                            <span>🛡️ Segurtasun-Printzipioak (CIA)</span>
+                            <svg class="chevron"><use href="#icon-chevron"/></svg>
+                        </button>
+                        <div class="acc-panel">
+                            <div class="acc-inner">
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-eye"/></svg>Konfidentzialtasuna</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Atzeko ateak irekitzen dituenez, datuak irakur ditzake.</p></div>
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-shield"/></svg>Osotasuna</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Fitxategi gaizto berriak (payloads) deskargatu ditzake.</p></div>
+                                <div class="prin-item status-arriskuan"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-server"/></svg>Eskuragarritasuna</div><span class="badge badge-arriskuan">🟡 Arriskuan</span></div><p>Ezkutuan egoten da, baina botnet batera konektatzean sare-banda jaten du.</p></div>
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-key"/></svg>Autentifikazioa</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Programa legitimo baten maskara erabiliz segurtasuna saihesten du.</p></div>
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-file"/></svg>Ez-gaitetzea</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Zure makina bera erabiliko da beste eraso batzuk egiteko (zure izenean).</p></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <!-- 4. BACKDOORS -->
                 <div class="term-card">
                     <div class="term-card-header">
-                        <h3>Backdoorsak</h3>
+                        <h3>
+                            <!-- Icono Backdoors: Puerta Abierta -->
+                            <svg class="term-icon" viewBox="0 0 24 24"><path d="M18 20V5H6v15M6 20h12"/><path d="M18 5L10 2v18l8 3"/><path d="M14 12v.01"/></svg>
+                            Backdoorsak
+                        </h3>
                         <span class="term-number">ID-04</span>
                     </div>
-                    <p class="term-desc">Ohiko autentifikazio prozesuak (pasahitzak) saihesten dituen ezkutuko sarrera-mekanismoa.</p>
-                    <div class="info-panel panel-ezaugarriak">
-                        <h4>Ezaugarriak</h4>
-                        <ul><li>Zailak dira detektatzeko eta erasotzailea pasahitza aldatu arren barruan geratzen da.</li></ul>
-                    </div>
-                    <div class="info-panel panel-kasua">
-                        <h4>Benetako Kasua (SolarWinds 2020)</h4>
-                        <p>Software legitimo baten eguneraketa ofizialean ezkutuko sarrera bat (SUNBURST) sartu zuten.</p>
-                        <a href="https://www.incibe.es/incibe-cert/alerta-temprana/avisos/campana-explotacion-activa-solarwinds-orion-platform" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Alerta (INCIBE-CERT)</a>
-                    </div>
-                    <div class="info-panel panel-babestu">
-                        <h4>Defentsa Protokoloa</h4>
-                        <p>Sareko trafikoaren monitorizazio aurreratua (IDS/IPS) eta osotasun-eskanerrak (FIM) exekutatu.</p>
+                    <p class="term-desc">Autentifikazio prozesuak saihesten dituen ezkutuko sarrera-mekanismoa.</p>
+                    
+                    <div class="info-panel panel-ezaugarriak"><h4>Ezaugarriak</h4><ul><li>Erasotzailea pasahitza aldatu arren barruan geratzen da.</li></ul></div>
+                    <div class="info-panel panel-kasua"><h4>Benetako Kasua (SolarWinds 2020)</h4><p>Eguneraketa ofizialean ezkutuko sarrera bat (SUNBURST) sartu zuten.</p>
+                    <a href="https://attack.mitre.org/software/S0559/" target="_blank" class="case-link">🔗 SUNBURST (MITRE ATT&CK)</a></div>
+                    <div class="info-panel panel-babestu"><h4>Defentsa Protokoloa</h4><p>Sareko trafikoaren monitorizazio aurreratua (IDS/IPS) erabili.</p></div>
+
+                    <div class="acc-container">
+                        <button class="acc-trigger" aria-expanded="false">
+                            <span>🛡️ Segurtasun-Printzipioak (CIA)</span>
+                            <svg class="chevron"><use href="#icon-chevron"/></svg>
+                        </button>
+                        <div class="acc-panel">
+                            <div class="acc-inner">
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-eye"/></svg>Konfidentzialtasuna</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Urrutiko sarbide osoa du datu pribatuak ikusteko.</p></div>
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-shield"/></svg>Osotasuna</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Edozein unetan sistemako konfigurazioak alda ditzake.</p></div>
+                                <div class="prin-item status-arriskuan"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-server"/></svg>Eskuragarritasuna</div><span class="badge badge-arriskuan">🟡 Arriskuan</span></div><p>Helburua espioitza den arren, erasotzaileak sistema itzal dezake.</p></div>
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-key"/></svg>Autentifikazioa</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Pasahitzak eta 2FA guztiz saihesteko tresna da.</p></div>
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-file"/></svg>Ez-gaitetzea</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Barruan ezkutuan dagoenez, erregistroetan legitimoa ematen du.</p></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <!-- 5. SPYWARE -->
                 <div class="term-card">
                     <div class="term-card-header">
-                        <h3>Spywarea</h3>
+                        <h3>
+                            <!-- Icono Spyware: Ojo espía -->
+                            <svg class="term-icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            Spywarea
+                        </h3>
                         <span class="term-number">ID-05</span>
                     </div>
-                    <p class="term-desc">Sisteman isilpean instalatzen den softwarea, erabiltzailearen informazio pertsonala biltzeko.</p>
-                    <div class="info-panel panel-ezaugarriak">
-                        <h4>Ezaugarriak</h4>
-                        <ul><li>Bilaketa-historiala, mezuak eta mikrofonoa/kamera kontrolatu ditzake.</li></ul>
-                    </div>
-                    <div class="info-panel panel-kasua">
-                        <h4>Benetako Kasua (Pegasus)</h4>
-                        <p>NSO Group-ek sortutako spywarea, kazetari eta politikarien mugikorrak espioatzeko erabilitakoa.</p>
-                        <a href="https://www.occrp.org/es/the-pegasus-project/israeli-made-spyware-used-to-monitor-journalists-and-activists-worldwide" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Pegasus Project (OCCRP)</a>
-                    </div>
-                    <div class="info-panel panel-babestu">
-                        <h4>Defentsa Protokoloa</h4>
-                        <p>Mugikorren sistema eragileak eguneratuta izan. Ez eman baimen inbaditzailerik aplikazioei.</p>
+                    <p class="term-desc">Isilpean instalatzen den softwarea informazio pertsonala biltzeko.</p>
+                    
+                    <div class="info-panel panel-ezaugarriak"><h4>Ezaugarriak</h4><ul><li>Bilaketa-historiala eta kamera kontrolatu ditzake.</li></ul></div>
+                    <div class="info-panel panel-kasua"><h4>Benetako Kasua (Pegasus)</h4><p>Mugikorrak espioatzeko erabilitako software aurreratua (NSO Group).</p>
+                    <a href="https://attack.mitre.org/software/S0316/" target="_blank" class="case-link">🔗 Pegasus (MITRE ATT&CK)</a></div>
+                    <div class="info-panel panel-babestu"><h4>Defentsa Protokoloa</h4><p>Sistema eragileak eguneratuta izan (Zero-Day ekiditeko).</p></div>
+
+                    <div class="acc-container">
+                        <button class="acc-trigger" aria-expanded="false">
+                            <span>🛡️ Segurtasun-Printzipioak (CIA)</span>
+                            <svg class="chevron"><use href="#icon-chevron"/></svg>
+                        </button>
+                        <div class="acc-panel">
+                            <div class="acc-inner">
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-eye"/></svg>Konfidentzialtasuna</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Datu pribatuen espioitza zuzena (mikrofonoa, argazkiak).</p></div>
+                                <div class="prin-item status-bermatua"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-shield"/></svg>Osotasuna</div><span class="badge badge-bermatua">🟢 Bermatua</span></div><p>Isilpean egoteko diseinatuta dago, ez ditu datuak apurtzen.</p></div>
+                                <div class="prin-item status-bermatua"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-server"/></svg>Eskuragarritasuna</div><span class="badge badge-bermatua">🟢 Bermatua</span></div><p>Gailuak funtzionamendu normala mantentzen du.</p></div>
+                                <div class="prin-item status-arriskuan"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-key"/></svg>Autentifikazioa</div><span class="badge badge-arriskuan">🟡 Arriskuan</span></div><p>Pasahitzak lapur ditzake Keylogger bidez.</p></div>
+                                <div class="prin-item status-bermatua"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-file"/></svg>Ez-gaitetzea</div><span class="badge badge-bermatua">🟢 Bermatua</span></div><p>Bilketa pasiboa egiten du batez ere, datu-erauzketa hutsa.</p></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <!-- 6. STEALERRAK -->
                 <div class="term-card">
                     <div class="term-card-header">
-                        <h3>Stealerrak</h3>
+                        <h3>
+                            <!-- Icono Stealer: Flecha Descarga/Extracción -->
+                            <svg class="term-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Stealerrak
+                        </h3>
                         <span class="term-number">ID-06</span>
                     </div>
-                    <p class="term-desc">Informazio kritikoa automatikoki erauzteko eta exfiltratzeko espezializatutako malwarea.</p>
-                    <div class="info-panel panel-ezaugarriak">
-                        <h4>Ezaugarriak</h4>
-                        <ul><li>Nabigatzaileetan gordetako pasahitzak eta saio-tokenak (Cookies) dituzte jomugan.</li></ul>
-                    </div>
-                    <div class="info-panel panel-kasua">
-                        <h4>Benetako Kasua (Linus Tech Tips 2023)</h4>
-                        <p>YouTube-ko teknologia kanal ezagunenetako bat (15 milioi harpidedun baino gehiago) hackeatu zuten, sponsor faltsu baten PDF itxurako malware baten bidez saio-tokenak lapurtuz, 2FA saihestuta.</p>
-                        <a href="https://www.kaspersky.com/blog/youtubers-takeovers/48375/" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Analisia (Kaspersky)</a>
-                    </div>
-                    <div class="info-panel panel-babestu">
-                        <h4>Defentsa Protokoloa</h4>
-                        <p>Inoiz ez gorde pasahitzik nabigatzailean (erabili KeePass edo Bitwarden). Kontu kritikoetan saioa itxi.</p>
+                    <p class="term-desc">Informazio kritikoa automatikoki erauzteko espezializatutako malwarea.</p>
+                    
+                    <div class="info-panel panel-ezaugarriak"><h4>Ezaugarriak</h4><ul><li>Nabigatzaileetako pasahitzak eta saio-tokenak dituzte jomugan.</li></ul></div>
+                    <div class="info-panel panel-kasua"><h4>Benetako Kasua (RedLine)</h4><p>Saio-tokenak lapurtzen espezializatutako malware ohikoena da sarean.</p>
+                    <a href="https://attack.mitre.org/software/S0649/" target="_blank" class="case-link">🔗 RedLine (MITRE ATT&CK)</a></div>
+                    <div class="info-panel panel-babestu"><h4>Defentsa Protokoloa</h4><p>Ez gorde pasahitzik nabigatzailean (erabili KeePass).</p></div>
+
+                    <div class="acc-container">
+                        <button class="acc-trigger" aria-expanded="false">
+                            <span>🛡️ Segurtasun-Printzipioak (CIA)</span>
+                            <svg class="chevron"><use href="#icon-chevron"/></svg>
+                        </button>
+                        <div class="acc-panel">
+                            <div class="acc-inner">
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-eye"/></svg>Konfidentzialtasuna</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Kripto-zorroak eta pasahitz gordeen fitxategiak lapurtzen ditu.</p></div>
+                                <div class="prin-item status-bermatua"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-shield"/></svg>Osotasuna</div><span class="badge badge-bermatua">🟢 Bermatua</span></div><p>Ez du ezer suntsitzen, kopiatu eta erauzi soilik egiten du.</p></div>
+                                <div class="prin-item status-bermatua"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-server"/></svg>Eskuragarritasuna</div><span class="badge badge-bermatua">🟢 Bermatua</span></div><p>Sistemak ehuneko ehunean jarraitzen du erabilgarri.</p></div>
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-key"/></svg>Autentifikazioa</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Saio-Cookieak lapurtzen dituenez, 2FA saihesten du guztiz.</p></div>
+                                <div class="prin-item status-bermatua"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-file"/></svg>Ez-gaitetzea</div><span class="badge badge-bermatua">🟢 Bermatua</span></div><p>Ekintza azkarra da, lapurreta zuzena identitatea faltsutu gabe.</p></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- IRITZIA PERTSONALA: UD1 -->
                 <div class="iritzia-card">
                     <h3>💡 Kimetzen Hausnarketa (1. Gaia)</h3>
-                    <p>Nire ikuspuntutik, lehen unitate honetako mehatxuak (Phishing, Troiarrak...) giza-akatsak ustiatzen dituzte gehienbat. Erakunde baten azpiegitura teknikoa oso segurua izan daiteke (Firewall aurreratuekin), baina erabiltzaileak ez badu formakuntzarik eta esteka okerrean klik egiten badu, defentsa teknikoak alferrikakoak dira. ASIR administratzaile gisa, argi daukat "Zero Trust" (Ez fidatu inortaz) politika ezartzea eta erabiltzaileen pribilegioak mugatzea dela mehatxu hauei aurre egiteko bide bakarra.</p>
+                    <p>Lehen unitate honetako mehatxuak giza-akatsak ustiatzen dituzte gehienbat. Erakunde baten azpiegitura teknikoa oso segurua izan daiteke, baina erabiltzaileak esteka okerrean klik egiten badu, defentsak alferrikakoak dira. ASIR administratzaile gisa, argi daukat "Zero Trust" politika ezartzea ezinbestekoa dela.</p>
                 </div>
 
             </div>
@@ -553,73 +489,108 @@
             <h2 class="section-title">UD2A4. Sare-Mehatxuak eta Kredentzial-Erasoak</h2>
             <div class="grid-container">
 
+                <!-- 7. KOOBFACE -->
                 <div class="term-card">
                     <div class="term-card-header">
-                        <h3>Koobface</h3>
+                        <h3>
+                            <!-- Icono Koobface: Usuarios / Red Social Alerta -->
+                            <svg class="term-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><line x1="21" y1="9" x2="21" y2="13"/><line x1="21" y1="17" x2="21.01" y2="17"/></svg>
+                            Koobface
+                        </h3>
                         <span class="term-number">ID-07</span>
                     </div>
                     <p class="term-desc">Sare sozialetan zehar hedatzen den har (worm) mota bat da, erabiltzaileen konfiantza ustiatzen duena.</p>
-                    <div class="info-panel panel-ezaugarriak">
-                        <h4>Ezaugarriak</h4>
-                        <ul><li>Esteka gaiztoak bidaltzen dizkie zure kontaktuei modu automatikoan bideo sentsazionalisten bidez.</li></ul>
-                    </div>
-                    <div class="info-panel panel-kasua">
-                        <h4>Benetako Kasua (2008)</h4>
-                        <p>Facebook eta MySpace erabili zituen "Zu al zara bideo honetan agertzen dena?" zioen mezu batekin jendea infektatzeko.</p>
-                        <a href="https://www.trendmicro.com/vinfo/us/threat-encyclopedia/malware/koobface" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Mehatxua (TrendMicro)</a>
-                    </div>
-                    <div class="info-panel panel-babestu">
-                        <h4>Defentsa Protokoloa</h4>
-                        <p>Ez egin klik sare sozialetako DM (zuzeneko) mezuetako esteketan, lagun batengandik etorri arren.</p>
+                    
+                    <div class="info-panel panel-ezaugarriak"><h4>Ezaugarriak</h4><ul><li>Esteka gaiztoak bidaltzen dizkie zure kontaktuei bideo sentsazionalisten bidez.</li></ul></div>
+                    <div class="info-panel panel-kasua"><h4>Benetako Kasua (2008)</h4><p>Facebook eta MySpace erabili zituen mezu batekin jendea infektatzeko.</p>
+                    <a href="https://en.wikipedia.org/wiki/Koobface" target="_blank" class="case-link">🔗 Koobface (Wikipedia EN)</a></div>
+                    
+                    <div class="acc-container">
+                        <button class="acc-trigger" aria-expanded="false">
+                            <span>🛡️ Segurtasun-Printzipioak (CIA)</span>
+                            <svg class="chevron"><use href="#icon-chevron"/></svg>
+                        </button>
+                        <div class="acc-panel">
+                            <div class="acc-inner">
+                                <div class="prin-item status-arriskuan"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-eye"/></svg>Konfidentzialtasuna</div><span class="badge badge-arriskuan">🟡 Arriskuan</span></div><p>Sare sozialetako kontuaren sarbidea lortzen du mezuak irakurtzeko.</p></div>
+                                <div class="prin-item status-arriskuan"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-shield"/></svg>Osotasuna</div><span class="badge badge-arriskuan">🟡 Arriskuan</span></div><p>Zure izenean mezuak sortu eta bidaltzen ditu zure sarea kutsatzeko.</p></div>
+                                <div class="prin-item status-bermatua"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-server"/></svg>Eskuragarritasuna</div><span class="badge badge-bermatua">🟢 Bermatua</span></div><p>Plataformak normal funtzionatzen jarraitzen du.</p></div>
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-key"/></svg>Autentifikazioa</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Zure profila erabiltzen du autentifikazioa pasata egongo balitz bezala jokatzeko.</p></div>
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-file"/></svg>Ez-gaitetzea</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Bidalitako mezuak zureak direla ematen du, lagunek zuregan konfiantza izateko.</p></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <!-- 8. BOTNET -->
                 <div class="term-card">
                     <div class="term-card-header">
-                        <h3>Botnet</h3>
+                        <h3>
+                            <!-- Icono Botnet: Nodos de red -->
+                            <svg class="term-icon" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                            Botnet
+                        </h3>
                         <span class="term-number">ID-08</span>
                     </div>
                     <p class="term-desc">Erasotzaile baten urrutiko kontrolpean dauden "Zombie" gailuen sare globala.</p>
-                    <div class="info-panel panel-ezaugarriak">
-                        <h4>Ezaugarriak</h4>
-                        <ul><li>Eraso masiboetarako (DDoS) edo Spam-a bidaltzeko erabiltzen dira milaka gailu aldi berean.</li></ul>
-                    </div>
-                    <div class="info-panel panel-kasua">
-                        <h4>Benetako Kasua (Mirai 2016)</h4>
-                        <p>Kamera eta Router-ekin osatutako sare batek trafiko izugarriko DDoS eraso bat egin zion Dyn DNS enpresari.</p>
-                        <a href="https://www.cloudflare.com/es-es/learning/ddos/glossary/mirai-botnet/" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Arkitektura (Cloudflare)</a>
-                    </div>
-                    <div class="info-panel panel-babestu">
-                        <h4>Defentsa Protokoloa</h4>
-                        <p>IoT gailuen (kamerak, routerrak) fabrikatik datozen pasahitzak aldatu. Firmwarea eguneratu.</p>
+                    
+                    <div class="info-panel panel-ezaugarriak"><h4>Ezaugarriak</h4><ul><li>Eraso masiboetarako (DDoS) edo Spam-a bidaltzeko erabiltzen dira milaka gailu.</li></ul></div>
+                    <div class="info-panel panel-kasua"><h4>Benetako Kasua (Mirai 2016)</h4><p>Kamera eta Router-ekin osatutako sare batek trafiko izugarriko DDoS eraso bat egin zion.</p>
+                    <a href="https://en.wikipedia.org/wiki/Mirai_(malware)" target="_blank" class="case-link">🔗 Mirai Malware (Wikipedia EN)</a></div>
+
+                    <div class="acc-container">
+                        <button class="acc-trigger" aria-expanded="false">
+                            <span>🛡️ Segurtasun-Printzipioak (CIA)</span>
+                            <svg class="chevron"><use href="#icon-chevron"/></svg>
+                        </button>
+                        <div class="acc-panel">
+                            <div class="acc-inner">
+                                <div class="prin-item status-bermatua"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-eye"/></svg>Konfidentzialtasuna</div><span class="badge badge-bermatua">🟢 Bermatua</span></div><p>Botnet baten zombia zarenean, ez dute zure informazio pribatua irakurtzen.</p></div>
+                                <div class="prin-item status-bermatua"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-shield"/></svg>Osotasuna</div><span class="badge badge-bermatua">🟢 Bermatua</span></div><p>Zure gailuko fitxategi pertsonalak edo sistemaren oinarriak ez dira aldatzen.</p></div>
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-server"/></svg>Eskuragarritasuna</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Erasotutako biktimentzat (DDoS), zerbitzariak erabat erori eta kolapsatzen dira.</p></div>
+                                <div class="prin-item status-arriskuan"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-key"/></svg>Autentifikazioa</div><span class="badge badge-arriskuan">🟡 Arriskuan</span></div><p>Gailu hutsetan sartzeko pasahitz lehenetsiak ("admin") probatzen dituzte etengabe.</p></div>
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-file"/></svg>Ez-gaitetzea</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Zure routerraren IP helbidea geratzen da jasota erasoa egin duena bezala.</p></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <!-- 9. INDAR GORDINEA -->
                 <div class="term-card">
                     <div class="term-card-header">
-                        <h3>Indar Gordineko Erasoa</h3>
+                        <h3>
+                            <!-- Icono Fuerza Bruta: Llave -->
+                            <svg class="term-icon" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                            Indar Gordineko Erasoa
+                        </h3>
                         <span class="term-number">ID-09</span>
                     </div>
                     <p class="term-desc">Kredentzialak asmatzeko teknika automatizatua. Karaktere-konbinazio guztiak probatzen ditu.</p>
-                    <div class="info-panel panel-ezaugarriak">
-                        <h4>Ezaugarriak</h4>
-                        <ul><li>Konbinazio asko automatikoki probatzen ditu zerbitzariaren aurka; hash-ak lapurtu badira, lineaz kanpo segundoko milioika konbinazio proba daitezke.</li></ul>
-                    </div>
-                    <div class="info-panel panel-kasua">
-                        <h4>Benetako Kasua (Taobao/Alibaba 2015 - Credential Stuffing)</h4>
-                        <p>Hackerrek beste webgune batzuetatik lapurtutako 99 milioi kredentzialen datu-base bat erabili zuten Taobao dendan banan-banan probatzeko, eta 20,6 milioi kontutan funtzionatu zuten. Indar gordinaren aldaera bat da: Credential Stuffing.</p>
-                        <a href="https://owasp.org/www-community/attacks/Credential_stuffing" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Taktika teknikoa (OWASP)</a>
-                    </div>
-                    <div class="info-panel panel-babestu">
-                        <h4>Defentsa Protokoloa</h4>
-                        <p>Ezinbestekoa da kontuak blokeatzeko polizak jartzea (adibidez: 3 saiakera okerren ostean blokeatu) eta MFA aktibatzea, Credential Stuffing-aren aurkako babes nagusia.</p>
+                    
+                    <div class="info-panel panel-ezaugarriak"><h4>Ezaugarriak</h4><ul><li>Zerbitzaria erasotzen du zuzenean, milioika konbinazio probatuz.</li></ul></div>
+                    <div class="info-panel panel-kasua"><h4>Benetako Kasua (Alibaba)</h4><p>Hackerrek lapurtutako 99 milioi pasahitz erabili zuten Taobao dendan banan-banan probatzeko.</p>
+                    <a href="https://en.wikipedia.org/wiki/Brute-force_attack" target="_blank" class="case-link">🔗 Brute-Force (Wikipedia EN)</a></div>
+
+                    <div class="acc-container">
+                        <button class="acc-trigger" aria-expanded="false">
+                            <span>🛡️ Segurtasun-Printzipioak (CIA)</span>
+                            <svg class="chevron"><use href="#icon-chevron"/></svg>
+                        </button>
+                        <div class="acc-panel">
+                            <div class="acc-inner">
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-eye"/></svg>Konfidentzialtasuna</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Behin pasahitza asmatuta, datu isilpeko guztietarako sarbidea irekitzen da.</p></div>
+                                <div class="prin-item status-arriskuan"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-shield"/></svg>Osotasuna</div><span class="badge badge-arriskuan">🟡 Arriskuan</span></div><p>Barrura sartuz gero, sistemako edozein erregistro edo fitxategi alda dezakete.</p></div>
+                                <div class="prin-item status-arriskuan"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-server"/></svg>Eskuragarritasuna</div><span class="badge badge-arriskuan">🟡 Arriskuan</span></div><p>Segundoko milaka eskaera egitean, saio-hasierako zerbitzariak blokeatu daitezke.</p></div>
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-key"/></svg>Autentifikazioa</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Honen aurkako eraso zuzena da; pasahitza hautsiz, sistema pitzatzen da.</p></div>
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-file"/></svg>Ez-gaitetzea</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Zure kontuarekin sartzen direnez, zaila da zu ez zinela izan frogatzea.</p></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- IRITZIA PERTSONALA: UD2 -->
                 <div class="iritzia-card">
                     <h3>💡 Kimetzen Hausnarketa (2. Gaia)</h3>
-                    <p>Bigarren unitate honetan argi geratzen da gailuen interkonexioak dakarren arriskua. Edozein etxetako router edo kamera segurtasun gabe bat Botnet baten (Mirai) parte izan daiteke guk jakin gabe. Horrez gain, Indar Gordineko erasoek erakusten dute pasahitz arruntak jada ez direla seguruak. Gaur egun, sistema administratzaileok derrigorrezkoa dugu Multi-Factor Authentication (MFA) ezartzea eta pasahitz lehenetsiak ("admin") debekatzea gure sareetan sartzen den edozein gailutan.</p>
+                    <p>Bigarren unitate honetan argi geratzen da gailuen interkonexioak dakarren arriskua. Edozein etxetako router edo kamera segurtasun gabe bat Botnet baten (Mirai) parte izan daiteke guk jakin gabe. Gaur egun, sistema administratzaileok derrigorrezkoa dugu Multi-Factor Authentication (MFA) ezartzea.</p>
                 </div>
 
             </div>
@@ -633,75 +604,99 @@
             
             <div class="grid-container">
 
+                <!-- 10. NOTPETYA -->
                 <div class="featured-card">
                     <div class="term-card-header">
-                        <h3>NotPetya Eraso Suntsitzailea (Wiper)</h3>
-                        <span class="term-number">MUNDU-MAILAKO ERASOA (2017)</span>
+                        <h3>
+                            <!-- Icono NotPetya: Bomba (Wiper) -->
+                            <svg class="term-icon" viewBox="0 0 24 24"><circle cx="11" cy="13" r="9"/><path d="M14 6l3-3"/><path d="M15 2h2v2"/><path d="M18 5h2v2"/></svg>
+                            NotPetya Eraso Suntsitzailea (Wiper)
+                        </h3>
+                        <span class="term-number">MUNDU-MAILAKO ERASOA</span>
                     </div>
-                    <p class="term-desc" style="font-size: 1.15rem; color: #fff;">Stuxnet harrak Irango uranio-aberasketa instalazioan (Natanz) zentrifugagailuei eragindako suntsipenaren ondoren, <strong>NotPetya</strong> azpiegitura kritikoei eta enpresa globalei egindako erasorik garestienetakoa eta suntsitzaileenetakoa izan da. Ransomware itxura zuen arren, bere benetako helburua datuak betirako ezabatzea zen.</p>
+                    <p class="term-desc" style="font-size: 1.15rem; color: #fff;">Stuxnet-en ondoren, <strong>NotPetya</strong> azpiegitura kritikoei egindako erasorik garestiena izan da. Ransomware itxura zuen arren, datuak betirako ezabatzea zen helburua.</p>
                     
-                    <div class="info-panel panel-alert">
-                        <h4>Gertatutakoaren Deskribapena</h4>
-                        <p>2017ko ekainean hasi zen, Ukrainako zerga-software baten (M.E.Doc) eguneraketa ofizial baten bidez. Handik, mundu osora hedatu zen abiadura ikaragarrian. Maersk, FedEx eta Merck bezalako enpresa erraldoiak erabat gelditu zituen. <strong>10.000 milioi dolarreko galerak</strong> eragin zituen (AEBetako Gobernuaren estimazioa), historiako zibererasorik suntsitzaileenetako bat bihurtuz.</p>
+                    <div class="info-panel panel-alert"><h4>Gertatutakoaren Deskribapena</h4><p>2017ko ekainean hasi zen. Maersk, FedEx eta Merck bezalako enpresa erraldoiak erabat gelditu zituen. <strong>10.000 milioi dolarreko galerak</strong> eragin zituen.</p></div>
+                    <a href="https://en.wikipedia.org/wiki/Petya_(malware)" target="_blank" class="case-link" style="margin-top: 1rem; border-color: rgba(239, 68, 68, 0.4); color: var(--neon-red);">🔗 NotPetya (Wikipedia EN)</a>
+
+                    <div class="acc-container" style="margin-top: 2rem;">
+                        <button class="acc-trigger" aria-expanded="false">
+                            <span>🛡️ Segurtasun-Printzipioak (CIA)</span>
+                            <svg class="chevron"><use href="#icon-chevron"/></svg>
+                        </button>
+                        <div class="acc-panel">
+                            <div class="acc-inner">
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-shield"/></svg>Osotasuna</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>MBR (Master Boot Record) suntsitu eta fitxategi guztiak betirako ezabatzen ditu.</p></div>
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-server"/></svg>Eskuragarritasuna</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Enpresen sistema guztiak erabat gelditu eta erabiltezin utzi zituen astetan.</p></div>
+                                <div class="prin-item status-arriskuan"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-eye"/></svg>Konfidentzialtasuna</div><span class="badge badge-arriskuan">🟡 Arriskuan</span></div><p>Datuak zifratzen dituenez inork ezin ditu irakurri, baina berez ez ditu kanpora bidaltzen.</p></div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="info-panel panel-ezaugarriak">
-                        <h4>Erasoaren Ezaugarriak</h4>
-                        <ul>
-                            <li><strong>Itxura faltsua (Wiper):</strong> Pantailan "Erreskatea" eskatzen zuen (Ransomware), baina datuak berreskuratzea ezinezkoa zen. Suntsipen masiboa zuen helburu (Wiper).</li>
-                            <li><strong>Hedapen automatikoa (Harra/Worm):</strong> Sare baten barruan, makina batetik bestera jauzi egiten zuen "EternalBlue" ahultasuna erabiliz.</li>
-                        </ul>
-                    </div>
-                    
-                    <a href="https://securelist.com/expetrpetyanotpetya-is-a-wiper-not-ransomware/78902/" target="_blank" rel="noopener noreferrer" class="case-link" style="margin-top: 1rem; border-color: rgba(239, 68, 68, 0.4); color: var(--neon-red);">🔗 NotPetya txostena (Kaspersky Securelist)</a>
                 </div>
 
+                <!-- 11. HARRAK -->
                 <div class="term-card">
                     <div class="term-card-header">
-                        <h3>Harrak (Gusanos)</h3>
+                        <h3>
+                            <!-- Icono Harrak: Onda Expansiva / Gusano -->
+                            <svg class="term-icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                            Harrak (Gusanos)
+                        </h3>
                         <span class="term-number">ID-10</span>
                     </div>
-                    <p class="term-desc">Euren kabuz hedatzeko gaitasuna duten programa gaiztoak dira, erabiltzailearen esku-hartzerik edo fitxategi ostalaririk behar ez dutenak.</p>
-                    <div class="info-panel panel-ezaugarriak">
-                        <h4>Ezaugarriak</h4>
-                        <ul><li>Sareko ahultasunak aztertzen dituzte ekipo batetik bestera jauzi egiteko.</li></ul>
-                    </div>
-                    <div class="info-panel panel-kasua">
-                        <h4>Benetako Kasua (Morris Worm 1988)</h4>
-                        <p>Interneten oso zabaldutako lehen har informatikoa izan zen. Interneteko ordenagailuen %10 (6.000 makina inguru) gelditu zituen.</p>
-                        <a href="https://www.eset.com/latam/blog/cultura-y-seguridad-digital/gusano-morris-un-experimento-costoso" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Kasu historikoa (ESET)</a>
-                    </div>
-                    <div class="info-panel panel-babestu">
-                        <h4>Defentsa Protokoloa</h4>
-                        <p>Sistema eragileak eta aplikazioak <strong>Beti Eguneratuta</strong> eduki (Adabakiak/Patches).</p>
+                    <p class="term-desc">Euren kabuz hedatzeko gaitasuna duten programa gaiztoak dira, esku-hartzerik behar ez dutenak.</p>
+                    
+                    <div class="info-panel panel-kasua"><h4>Benetako Kasua (Morris Worm 1988)</h4><p>Historiako lehen har informatikoa izan zen. Interneteko %10 gelditu zuen.</p>
+                    <a href="https://en.wikipedia.org/wiki/Morris_worm" target="_blank" class="case-link">🔗 Morris Worm (Wikipedia EN)</a></div>
+
+                    <div class="acc-container">
+                        <button class="acc-trigger" aria-expanded="false">
+                            <span>🛡️ Segurtasun-Printzipioak (CIA)</span>
+                            <svg class="chevron"><use href="#icon-chevron"/></svg>
+                        </button>
+                        <div class="acc-panel">
+                            <div class="acc-inner">
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-server"/></svg>Eskuragarritasuna</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Etengabe bikoiztearen poderioz sareko banda-zabalera guztia jaten du, sistema kolapsatuz.</p></div>
+                                <div class="prin-item status-bermatua"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-eye"/></svg>Konfidentzialtasuna</div><span class="badge badge-bermatua">🟢 Bermatua</span></div><p>Har baten berezko asmoa hedatzea da, ez datu pribatuak lapurtzea.</p></div>
+                                <div class="prin-item status-arriskuan"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-shield"/></svg>Osotasuna</div><span class="badge badge-arriskuan">🟡 Arriskuan</span></div><p>Sistema gainkargatzen du eta prozesuak alteratu ditzake.</p></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <!-- 12. MAMUAK (HOAXES) -->
                 <div class="term-card">
                     <div class="term-card-header">
-                        <h3>Mamuak (Hoaxes)</h3>
+                        <h3>
+                            <!-- Icono Mamuak: Fantasma -->
+                            <svg class="term-icon" viewBox="0 0 24 24"><path d="M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L9 19l3 3 3-3 2.5 2.5L20 19l3 3V10a8 8 0 0 0-8-8z"/><path d="M9 10h.01"/><path d="M15 10h.01"/></svg>
+                            Mamuak (Hoaxes)
+                        </h3>
                         <span class="term-number">ID-11</span>
                     </div>
-                    <p class="term-desc">Berez kode gaiztorik ez daukaten baina erabiltzailea beldurtzeko sortutako "Birus Faltsuen" abisuak edo iruzurrak dira.</p>
-                    <div class="info-panel panel-ezaugarriak">
-                        <h4>Ezaugarriak</h4>
-                        <ul><li>Kaltea erabiltzaileak berak egiten du abisuak dioenari kasu eginez (fitxategiak ezabatuz).</li></ul>
-                    </div>
-                    <div class="info-panel panel-kasua">
-                        <h4>Benetako Kasua (Jdbgmgr.exe, 2002)</h4>
-                        <p>Kate-mezu bat zabaldu zen esanez hartz txiki baten ikonoa zeukan fitxategia birus ezkutu bat zela. Berez, osagai legitimo bat zen.</p>
-                        <a href="https://www.snopes.com/computer/virus/jdbgmgr.htm" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Hoax-a aztertu (Snopes)</a>
-                    </div>
-                    <div class="info-panel panel-babestu">
-                        <h4>Defentsa Protokoloa</h4>
-                        <p>Informazioa INCIBE bezalako iturri ofizialetan kontrastatu beti alarma bat jaso aurretik.</p>
+                    <p class="term-desc">Berez kode gaiztorik ez daukaten baina erabiltzailea beldurtzeko sortutako "Birus Faltsuen" abisuak dira.</p>
+                    
+                    <div class="info-panel panel-kasua"><h4>Benetako Kasua (Jdbgmgr.exe)</h4><p>Kate-mezu bat zabaldu zen esanez hartz txiki baten ikonoa zeukan fitxategia birus bat zela.</p>
+                    <a href="https://en.wikipedia.org/wiki/Virus_hoax" target="_blank" class="case-link">🔗 Virus Hoax (Wikipedia EN)</a></div>
+
+                    <div class="acc-container">
+                        <button class="acc-trigger" aria-expanded="false">
+                            <span>🛡️ Segurtasun-Printzipioak (CIA)</span>
+                            <svg class="chevron"><use href="#icon-chevron"/></svg>
+                        </button>
+                        <div class="acc-panel">
+                            <div class="acc-inner">
+                                <div class="prin-item status-hautsita"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-shield"/></svg>Osotasuna</div><span class="badge badge-hautsita">🔴 Hautsita</span></div><p>Erabiltzailea engainatzen da sistemako fitxategi legitimoak bere eskuz ezabatu ditzan.</p></div>
+                                <div class="prin-item status-bermatua"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-file"/></svg>Ez-gaitetzea</div><span class="badge badge-bermatua">🟢 Bermatua</span></div><p>Errorea erabiltzaileak egiten du; inork ez du bere lekua hartzen sarean.</p></div>
+                                <div class="prin-item status-bermatua"><div class="prin-header"><div class="prin-title"><svg class="cia-icon"><use href="#icon-eye"/></svg>Konfidentzialtasuna</div><span class="badge badge-bermatua">🟢 Bermatua</span></div><p>Gezurrezko abisu batek ez dauka inolako tresnarik datuak irakurtzeko.</p></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- IRITZIA PERTSONALA: UD3 -->
                 <div class="iritzia-card">
                     <h3>💡 Kimetzen Hausnarketa (3. Gaia)</h3>
-                    <p>NotPetya edo WannaCry bezalako erasoek erakusten dute zibersegurtasuna jada ez dela soilik 'birus' kontu bat, baizik eta gerra teknologiko bat. Harrak (Worms) erabiltzeak, erabiltzailearen esku-hartzerik gabe hedatzeko, izugarrizko arriskua suposatzen du azpiegitura kritikoentzat eta enpresen biziraupenarentzat. Bestalde, Mamuak (Hoaxes) mehatxu inuzenteak diruditen arren, desinformazioaren eta Gizarte Ingeniaritzaren boterearen adibide garbia dira: erabiltzailea bera bihurtzen da bere sistemaren borrero.</p>
+                    <p>NotPetya bezalako erasoek erakusten dute zibersegurtasuna jada ez dela soilik 'birus' kontu bat, baizik eta gerra teknologiko bat. Harrak (Worms) erabiltzeak, erabiltzailearen esku-hartzerik gabe hedatzeko, izugarrizko arriskua suposatzen du azpiegitura kritikoentzat. Mamuak (Hoaxes) mehatxu inuzenteak diruditen arren, desinformazioaren boterearen adibide garbia dira: erabiltzailea bera bihurtzen da bere sistemaren borrero.</p>
                 </div>
 
             </div>
@@ -713,19 +708,45 @@
         <p>[ KIMETZ ] // ASIR 2. Maila - Segurtasuna eta Erabilgarritasun Handia (2026)</p>
     </footer>
 
-    <!-- SCRIPT PARA GESTIONAR LAS PESTAÑAS (PÁGINAS SEPARADAS) -->
+    <!-- SCRIPT PRO (ACORDEONES Y TABS) -->
     <script>
-        function showTab(tabId, btn) {
-            document.querySelectorAll('.tab-content').forEach(section => {
-                section.style.display = 'none';
+        document.addEventListener('DOMContentLoaded', () => {
+            const navBtns = document.querySelectorAll('.nav-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            navBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const target = btn.getAttribute('data-target');
+                    
+                    navBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    tabContents.forEach(tab => {
+                        tab.style.display = tab.id === target ? 'block' : 'none';
+                    });
+                    window.scrollTo(0, 0);
+                });
             });
-            document.querySelectorAll('.nav-btn').forEach(b => {
-                b.classList.remove('active');
+
+            const accordions = document.querySelectorAll('.acc-trigger');
+            accordions.forEach(acc => {
+                acc.addEventListener('click', function() {
+                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                    
+                    accordions.forEach(other => {
+                        if (other !== this) {
+                            other.setAttribute('aria-expanded', 'false');
+                            other.nextElementSibling.classList.remove('open');
+                            other.parentElement.classList.remove('active-acc');
+                        }
+                    });
+
+                    this.setAttribute('aria-expanded', !isExpanded);
+                    this.nextElementSibling.classList.toggle('open', !isExpanded);
+                    this.parentElement.classList.toggle('active-acc', !isExpanded);
+                });
             });
-            document.getElementById(tabId).style.display = 'block';
-            btn.classList.add('active');
-            window.scrollTo(0, 0);
-        }
+        });
     </script>
 </body>
 
