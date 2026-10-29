@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kimetz Sec | Cyber-Portafolioa</title>
     
-    <!-- FAVICON PUESTO CON UN ENLACE DIRECTO (Sin carpetas) -->
-    <link rel="icon" href="https://api.iconify.design/mdi:shield-lock.svg?color=%2306b6d4" type="image/svg+xml">
+    <!-- FAVICON INCRUSTADO (escudo con candado, SVG en data URI: no necesita archivos externos) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2306b6d4' d='M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5z'/%3E%3Crect x='8' y='10' width='8' height='6' rx='1' fill='%23020617'/%3E%3Cpath d='M9.5 10V8.5a2.5 2.5 0 0 1 5 0V10' fill='none' stroke='%23020617' stroke-width='1.5'/%3E%3C/svg%3E">
 
     <style>
         /* =========================================
@@ -64,6 +64,8 @@
             border-bottom: 1px solid var(--glass-border);
             padding: 1rem 3rem;
             display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
@@ -76,6 +78,7 @@
             letter-spacing: 1px;
             background: linear-gradient(to right, var(--neon-cyan), var(--neon-purple));
             -webkit-background-clip: text;
+            background-clip: text;
             color: transparent;
         }
 
@@ -105,6 +108,11 @@
             color: var(--text-main); 
         }
 
+        .nav-links button:focus-visible {
+            outline: 2px solid var(--neon-cyan);
+            outline-offset: 4px;
+        }
+
         .nav-links button::after {
             content: ''; position: absolute; bottom: -5px; left: 0;
             width: 0%; height: 2px; background: var(--neon-cyan);
@@ -113,6 +121,11 @@
         
         .nav-links button:hover::after, .nav-links button.active::after { 
             width: 100%; 
+        }
+
+        @media (max-width: 600px) {
+            .navbar { padding: 1rem; }
+            .nav-links { gap: 1rem; padding-left: 0; }
         }
 
         /* =========================================
@@ -191,7 +204,7 @@
         /* GRID Y TARJETAS */
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
             gap: 2rem;
             margin-bottom: 3rem;
         }
@@ -212,6 +225,35 @@
             color: var(--neon-red);
             text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
             font-size: 2rem;
+        }
+
+        /* TARJETA DE OPINIÓN PERSONAL (IRITZIA) */
+        .iritzia-card {
+            grid-column: 1 / -1;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .iritzia-card h3 {
+            color: var(--neon-purple);
+            font-size: 1.5rem;
+            margin: 0 0 1rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .iritzia-card p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #e2e8f0;
+            margin: 0;
         }
 
         .term-card {
@@ -340,10 +382,10 @@
     <nav class="navbar">
         <h1>KIMETZ // SEC-SYSTEM</h1>
         <ul class="nav-links">
-            <li><button class="nav-btn active" onclick="showTab('aurkezpena')">Aurkezpena</button></li>
-            <li><button class="nav-btn" onclick="showTab('ud1a1')">UD1</button></li>
-            <li><button class="nav-btn" onclick="showTab('ud2a4')">UD2</button></li>
-            <li><button class="nav-btn" onclick="showTab('ud3a1')">UD3</button></li>
+            <li><button class="nav-btn active" onclick="showTab('aurkezpena', this)">Aurkezpena</button></li>
+            <li><button class="nav-btn" onclick="showTab('ud1a1', this)">UD1</button></li>
+            <li><button class="nav-btn" onclick="showTab('ud2a4', this)">UD2</button></li>
+            <li><button class="nav-btn" onclick="showTab('ud3a1', this)">UD3</button></li>
         </ul>
     </nav>
 
@@ -355,7 +397,7 @@
         <section id="aurkezpena" class="tab-content" style="display: block;">
             <div class="hero-box">
                 <h2>Segurtasuna & Erabilgarritasun Handia</h2>
-                <p>ASIR 2. Maila - Zibersegurtasuneko kontzeptuen, eraso bektoreen eta defentsa protokoloen portafolio teknikoa. Kasu historiko errealekin osatuta.</p>
+                <p>ASIR 2. Maila - Zibersegurtasuneko kontzeptuen, eraso bektoreen eta defentsa protokoloen portafolio teknikoa. Erakunde ofizialen eta zibersegurtasun-enpresa ezagunen iturriekin (INCIBE, OWASP, ESET, Kaspersky...).</p>
                 <p style="margin-top: 2rem; font-size: 0.95rem; color: var(--neon-cyan);">
                     ↑ Erabili goiko menua unitateetan zehar nabigatzeko ↑
                 </p>
@@ -380,8 +422,9 @@
                         <ul><li>Giza ahultasuna (beldurra edo urgentzia) ustiatzen du.</li></ul>
                     </div>
                     <div class="info-panel panel-kasua">
-                        <h4>Benetako Kasua (Google/Facebook 2015)</h4>
-                        <p>Evaldas Rimasauskas lituaniarrak 100 milioi dolar lapurtu zituen faktura faltsuak bidaliz.</p>
+                        <h4>Benetako Kasua (Google/Facebook 2013-2015)</h4>
+                        <p>Evaldas Rimasauskas lituaniarrak 100 milioi dolar baino gehiago lapurtu zituen faktura faltsuak bidaliz hornitzaile baten izenean.</p>
+                        <a href="https://www.xataka.com.co/empresas-y-economia/este-hombre-le-robo-122-millones-dolares-a-facebook-google-usando-facturas-falsas-se-creyeron-todas" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Albiste teknikoa (Xataka)</a>
                     </div>
                     <div class="info-panel panel-babestu">
                         <h4>Defentsa Protokoloa</h4>
@@ -391,7 +434,7 @@
 
                 <div class="term-card">
                     <div class="term-card-header">
-                        <h3>Biren erasoa</h3>
+                        <h3>Birusen erasoa</h3>
                         <span class="term-number">ID-02</span>
                     </div>
                     <p class="term-desc">Bere burua bikoizteko eta sistema baten fitxategi legitimoak infektatzeko gaitasuna duen kode gaiztoa.</p>
@@ -402,6 +445,7 @@
                     <div class="info-panel panel-kasua">
                         <h4>Benetako Kasua (ILOVEYOU 2000)</h4>
                         <p>"I love you" zioen mezu batekin heltzen zen. Irekitzean, sistemako fitxategiak gainidazten zituen.</p>
+                        <a href="https://www.sophos.com/es-es/blog/iloveyou-the-love-bug-virus-20-years-on-could-it-happen-again" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Analisi teknikoa (Sophos)</a>
                     </div>
                     <div class="info-panel panel-babestu">
                         <h4>Defentsa Protokoloa</h4>
@@ -417,11 +461,12 @@
                     <p class="term-desc">Programa legitimo eta erabilgarri baten atzean ezkutatzen den malwarea.</p>
                     <div class="info-panel panel-ezaugarriak">
                         <h4>Ezaugarriak</h4>
-                        <ul><li>Software piratan edo krakeatuetan ezkutatzen da sistemako ateak irekitzeko.</li></ul>
+                        <ul><li>Software piratan, krakeatuetan edo posta-eranskinetan ezkutatzen da sistemako ateak irekitzeko.</li></ul>
                     </div>
                     <div class="info-panel panel-kasua">
                         <h4>Benetako Kasua (Emotet)</h4>
                         <p>Bankuko datuak lapurtzeko sortu zen, baina geroago erakundeetara Ransomwarea sartzeko sarrera saldu zuen.</p>
+                        <a href="https://www.incibe.es/incibe-cert/blog/emotet-caracteristicas-y-funcionamiento" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Txostena (INCIBE-CERT)</a>
                     </div>
                     <div class="info-panel panel-babestu">
                         <h4>Defentsa Protokoloa</h4>
@@ -442,6 +487,7 @@
                     <div class="info-panel panel-kasua">
                         <h4>Benetako Kasua (SolarWinds 2020)</h4>
                         <p>Software legitimo baten eguneraketa ofizialean ezkutuko sarrera bat (SUNBURST) sartu zuten.</p>
+                        <a href="https://www.incibe.es/incibe-cert/alerta-temprana/avisos/campana-explotacion-activa-solarwinds-orion-platform" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Alerta (INCIBE-CERT)</a>
                     </div>
                     <div class="info-panel panel-babestu">
                         <h4>Defentsa Protokoloa</h4>
@@ -462,6 +508,7 @@
                     <div class="info-panel panel-kasua">
                         <h4>Benetako Kasua (Pegasus)</h4>
                         <p>NSO Group-ek sortutako spywarea, kazetari eta politikarien mugikorrak espioatzeko erabilitakoa.</p>
+                        <a href="https://www.occrp.org/es/the-pegasus-project/israeli-made-spyware-used-to-monitor-journalists-and-activists-worldwide" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Pegasus Project (OCCRP)</a>
                     </div>
                     <div class="info-panel panel-babestu">
                         <h4>Defentsa Protokoloa</h4>
@@ -481,12 +528,19 @@
                     </div>
                     <div class="info-panel panel-kasua">
                         <h4>Benetako Kasua (Linus Tech Tips 2023)</h4>
-                        <p>YouTube-ko kanal handiena hackeatu zuten RedLine Stealer batekin saio-tokenak lapurtuz, 2FA saihestuta.</p>
+                        <p>YouTube-ko teknologia kanal ezagunenetako bat (15 milioi harpidedun baino gehiago) hackeatu zuten, sponsor faltsu baten PDF itxurako malware baten bidez saio-tokenak lapurtuz, 2FA saihestuta.</p>
+                        <a href="https://www.kaspersky.com/blog/youtubers-takeovers/48375/" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Analisia (Kaspersky)</a>
                     </div>
                     <div class="info-panel panel-babestu">
                         <h4>Defentsa Protokoloa</h4>
                         <p>Inoiz ez gorde pasahitzik nabigatzailean (erabili KeePass edo Bitwarden). Kontu kritikoetan saioa itxi.</p>
                     </div>
+                </div>
+
+                <!-- IRITZIA PERTSONALA: UD1 -->
+                <div class="iritzia-card">
+                    <h3>💡 Kimetzen Hausnarketa (1. Gaia)</h3>
+                    <p>Nire ikuspuntutik, lehen unitate honetako mehatxuak (Phishing, Troiarrak...) giza-akatsak ustiatzen dituzte gehienbat. Erakunde baten azpiegitura teknikoa oso segurua izan daiteke (Firewall aurreratuekin), baina erabiltzaileak ez badu formakuntzarik eta esteka okerrean klik egiten badu, defentsa teknikoak alferrikakoak dira. ASIR administratzaile gisa, argi daukat "Zero Trust" (Ez fidatu inortaz) politika ezartzea eta erabiltzaileen pribilegioak mugatzea dela mehatxu hauei aurre egiteko bide bakarra.</p>
                 </div>
 
             </div>
@@ -499,7 +553,6 @@
             <h2 class="section-title">UD2A4. Sare-Mehatxuak eta Kredentzial-Erasoak</h2>
             <div class="grid-container">
 
-                <!-- TERMINO 7: KOOBFACE -->
                 <div class="term-card">
                     <div class="term-card-header">
                         <h3>Koobface</h3>
@@ -513,6 +566,7 @@
                     <div class="info-panel panel-kasua">
                         <h4>Benetako Kasua (2008)</h4>
                         <p>Facebook eta MySpace erabili zituen "Zu al zara bideo honetan agertzen dena?" zioen mezu batekin jendea infektatzeko.</p>
+                        <a href="https://www.trendmicro.com/vinfo/us/threat-encyclopedia/malware/koobface" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Mehatxua (TrendMicro)</a>
                     </div>
                     <div class="info-panel panel-babestu">
                         <h4>Defentsa Protokoloa</h4>
@@ -520,7 +574,6 @@
                     </div>
                 </div>
 
-                <!-- TERMINO 8: BOTNET -->
                 <div class="term-card">
                     <div class="term-card-header">
                         <h3>Botnet</h3>
@@ -534,6 +587,7 @@
                     <div class="info-panel panel-kasua">
                         <h4>Benetako Kasua (Mirai 2016)</h4>
                         <p>Kamera eta Router-ekin osatutako sare batek trafiko izugarriko DDoS eraso bat egin zion Dyn DNS enpresari.</p>
+                        <a href="https://www.cloudflare.com/es-es/learning/ddos/glossary/mirai-botnet/" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Arkitektura (Cloudflare)</a>
                     </div>
                     <div class="info-panel panel-babestu">
                         <h4>Defentsa Protokoloa</h4>
@@ -541,7 +595,6 @@
                     </div>
                 </div>
 
-                <!-- TERMINO 9: INDAR GORDINEKO ERASOA -->
                 <div class="term-card">
                     <div class="term-card-header">
                         <h3>Indar Gordineko Erasoa</h3>
@@ -550,40 +603,46 @@
                     <p class="term-desc">Kredentzialak asmatzeko teknika automatizatua. Karaktere-konbinazio guztiak probatzen ditu.</p>
                     <div class="info-panel panel-ezaugarriak">
                         <h4>Ezaugarriak</h4>
-                        <ul><li>Zerbitzaria erasotzen du zuzenean, milioika konbinazio segundoko probatuz.</li></ul>
+                        <ul><li>Konbinazio asko automatikoki probatzen ditu zerbitzariaren aurka; hash-ak lapurtu badira, lineaz kanpo segundoko milioika konbinazio proba daitezke.</li></ul>
                     </div>
                     <div class="info-panel panel-kasua">
-                        <h4>Benetako Kasua (Alibaba 2016)</h4>
-                        <p>Hackerrek lapurtutako 99 milioi pasahitz datu-base bat erabili zuten Taobao dendan banan-banan probatzeko.</p>
+                        <h4>Benetako Kasua (Taobao/Alibaba 2015 - Credential Stuffing)</h4>
+                        <p>Hackerrek beste webgune batzuetatik lapurtutako 99 milioi kredentzialen datu-base bat erabili zuten Taobao dendan banan-banan probatzeko, eta 20,6 milioi kontutan funtzionatu zuten. Indar gordinaren aldaera bat da: Credential Stuffing.</p>
+                        <a href="https://owasp.org/www-community/attacks/Credential_stuffing" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Taktika teknikoa (OWASP)</a>
                     </div>
                     <div class="info-panel panel-babestu">
                         <h4>Defentsa Protokoloa</h4>
-                        <p>Ezinbestekoa da kontuak blokeatzeko polizak jartzea (adibidez: 3 saiakera okerren ostean blokeatu).</p>
+                        <p>Ezinbestekoa da kontuak blokeatzeko polizak jartzea (adibidez: 3 saiakera okerren ostean blokeatu) eta MFA aktibatzea, Credential Stuffing-aren aurkako babes nagusia.</p>
                     </div>
+                </div>
+
+                <!-- IRITZIA PERTSONALA: UD2 -->
+                <div class="iritzia-card">
+                    <h3>💡 Kimetzen Hausnarketa (2. Gaia)</h3>
+                    <p>Bigarren unitate honetan argi geratzen da gailuen interkonexioak dakarren arriskua. Edozein etxetako router edo kamera segurtasun gabe bat Botnet baten (Mirai) parte izan daiteke guk jakin gabe. Horrez gain, Indar Gordineko erasoek erakusten dute pasahitz arruntak jada ez direla seguruak. Gaur egun, sistema administratzaileok derrigorrezkoa dugu Multi-Factor Authentication (MFA) ezartzea eta pasahitz lehenetsiak ("admin") debekatzea gure sareetan sartzen den edozein gailutan.</p>
                 </div>
 
             </div>
         </section>
 
         <!-- =====================================
-             PESTAÑA 3: SECCIÓN UD3A1 
+             PESTAÑA 3: SECCIÓN UD3A1
              ===================================== -->
         <section id="ud3a1" class="tab-content">
             <h2 class="section-title">UD3A1. Eragin Handiko Erasoak eta Mehatxu Berriak</h2>
             
             <div class="grid-container">
 
-                <!-- CASO ESPECIAL (Requisito UD3A1 - NOTPETYA) -->
                 <div class="featured-card">
                     <div class="term-card-header">
                         <h3>NotPetya Eraso Suntsitzailea (Wiper)</h3>
                         <span class="term-number">MUNDU-MAILAKO ERASOA (2017)</span>
                     </div>
-                    <p class="term-desc" style="font-size: 1.15rem; color: #fff;">Stuxnet harrak Irango zentral nuklearrean eragindako makinen suntsipenaren ondoren, <strong>NotPetya</strong> azpiegitura kritikoei eta enpresa globalei egindako erasorik garestiena eta suntsitzaileena izan da. Ransomware itxura zuen arren, bere benetako helburua datuak betirako ezabatzea zen.</p>
+                    <p class="term-desc" style="font-size: 1.15rem; color: #fff;">Stuxnet harrak Irango uranio-aberasketa instalazioan (Natanz) zentrifugagailuei eragindako suntsipenaren ondoren, <strong>NotPetya</strong> azpiegitura kritikoei eta enpresa globalei egindako erasorik garestienetakoa eta suntsitzaileenetakoa izan da. Ransomware itxura zuen arren, bere benetako helburua datuak betirako ezabatzea zen.</p>
                     
                     <div class="info-panel panel-alert">
                         <h4>Gertatutakoaren Deskribapena</h4>
-                        <p>2017ko ekainean hasi zen, Ukrainako zerga-software baten (M.E.Doc) eguneraketa ofizial baten bidez. Handik, mundu osora hedatu zen abiadura ikaragarrian. Maersk, FedEx eta Merck bezalako enpresa erraldoiak erabat gelditu zituen. <strong>10.000 milioi dolarreko galerak</strong> eragin zituen, historiako zibererasorik suntsitzaileena bihurtuz.</p>
+                        <p>2017ko ekainean hasi zen, Ukrainako zerga-software baten (M.E.Doc) eguneraketa ofizial baten bidez. Handik, mundu osora hedatu zen abiadura ikaragarrian. Maersk, FedEx eta Merck bezalako enpresa erraldoiak erabat gelditu zituen. <strong>10.000 milioi dolarreko galerak</strong> eragin zituen (AEBetako Gobernuaren estimazioa), historiako zibererasorik suntsitzaileenetako bat bihurtuz.</p>
                     </div>
                     
                     <div class="info-panel panel-ezaugarriak">
@@ -591,65 +650,58 @@
                         <ul>
                             <li><strong>Itxura faltsua (Wiper):</strong> Pantailan "Erreskatea" eskatzen zuen (Ransomware), baina datuak berreskuratzea ezinezkoa zen. Suntsipen masiboa zuen helburu (Wiper).</li>
                             <li><strong>Hedapen automatikoa (Harra/Worm):</strong> Sare baten barruan, makina batetik bestera jauzi egiten zuen "EternalBlue" ahultasuna erabiliz.</li>
-                            <li><strong>Kredentzialen Lapurreta:</strong> Administratzaileen pasahitzak memoria RAM-etik lapurtzen zituen errazago hedatzeko.</li>
                         </ul>
                     </div>
                     
-                    <a href="https://eu.wikipedia.org/wiki/Petya" target="_blank" class="case-link" style="margin-top: 1rem; border-color: rgba(239, 68, 68, 0.4); color: var(--neon-red);">🔗 NotPetya-ri buruzko informazioa (Wikipedia)</a>
+                    <a href="https://securelist.com/expetrpetyanotpetya-is-a-wiper-not-ransomware/78902/" target="_blank" rel="noopener noreferrer" class="case-link" style="margin-top: 1rem; border-color: rgba(239, 68, 68, 0.4); color: var(--neon-red);">🔗 NotPetya txostena (Kaspersky Securelist)</a>
                 </div>
 
-                <!-- TERMINO 10: HARRAK (GUSANOS) -->
                 <div class="term-card">
                     <div class="term-card-header">
                         <h3>Harrak (Gusanos)</h3>
                         <span class="term-number">ID-10</span>
                     </div>
                     <p class="term-desc">Euren kabuz hedatzeko gaitasuna duten programa gaiztoak dira, erabiltzailearen esku-hartzerik edo fitxategi ostalaririk behar ez dutenak.</p>
-                    
                     <div class="info-panel panel-ezaugarriak">
                         <h4>Ezaugarriak</h4>
-                        <ul>
-                            <li>Sareko ahultasunak aztertzen dituzte ekipo batetik bestera jauzi egiteko.</li>
-                            <li>Sareko banda-zabalera asko kontsumitzen dute, sistemak kolapsatuz (DoS).</li>
-                        </ul>
+                        <ul><li>Sareko ahultasunak aztertzen dituzte ekipo batetik bestera jauzi egiteko.</li></ul>
                     </div>
-
                     <div class="info-panel panel-kasua">
-                        <h4>Benetako Kasua</h4>
-                        <p><strong>Morris Worm (1988):</strong> Historiako lehen har informatikoa izan zen. Interneteko ordenagailuen %10 (6.000 makina inguru) gelditu zituen bere burua etengabe bikoizten zuelako.</p>
+                        <h4>Benetako Kasua (Morris Worm 1988)</h4>
+                        <p>Interneten oso zabaldutako lehen har informatikoa izan zen. Interneteko ordenagailuen %10 (6.000 makina inguru) gelditu zituen.</p>
+                        <a href="https://www.eset.com/latam/blog/cultura-y-seguridad-digital/gusano-morris-un-experimento-costoso" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Kasu historikoa (ESET)</a>
                     </div>
-
                     <div class="info-panel panel-babestu">
                         <h4>Defentsa Protokoloa</h4>
                         <p>Sistema eragileak eta aplikazioak <strong>Beti Eguneratuta</strong> eduki (Adabakiak/Patches).</p>
                     </div>
                 </div>
 
-                <!-- TERMINO 11: MAMUAK (HOAXES) -->
                 <div class="term-card">
                     <div class="term-card-header">
                         <h3>Mamuak (Hoaxes)</h3>
                         <span class="term-number">ID-11</span>
                     </div>
                     <p class="term-desc">Berez kode gaiztorik ez daukaten baina erabiltzailea beldurtzeko sortutako "Birus Faltsuen" abisuak edo iruzurrak dira.</p>
-                    
                     <div class="info-panel panel-ezaugarriak">
                         <h4>Ezaugarriak</h4>
-                        <ul>
-                            <li>Erabiltzailea modu masiboan mezuak berridaltzera bultzatzen dute (Kate-mezuak).</li>
-                            <li>Kaltea erabiltzaileak berak egiten du abisuak dioenari kasu eginez.</li>
-                        </ul>
+                        <ul><li>Kaltea erabiltzaileak berak egiten du abisuak dioenari kasu eginez (fitxategiak ezabatuz).</li></ul>
                     </div>
-
                     <div class="info-panel panel-kasua">
-                        <h4>Benetako Kasua</h4>
-                        <p><strong>Jdbgmgr.exe Mamua:</strong> Kate-mezu bat zabaldu zen esanez hartz txiki baten ikonoa zeukan fitxategia birus ezkutu bat zela. Berez, Windows-eko osagai legitimo bat zen eta jendeak bere eskuz ezabatu zuen.</p>
+                        <h4>Benetako Kasua (Jdbgmgr.exe, 2002)</h4>
+                        <p>Kate-mezu bat zabaldu zen esanez hartz txiki baten ikonoa zeukan fitxategia birus ezkutu bat zela. Berez, osagai legitimo bat zen.</p>
+                        <a href="https://www.snopes.com/computer/virus/jdbgmgr.htm" target="_blank" rel="noopener noreferrer" class="case-link">🔗 Hoax-a aztertu (Snopes)</a>
                     </div>
-
                     <div class="info-panel panel-babestu">
                         <h4>Defentsa Protokoloa</h4>
-                        <p>Informazioa INCIBE bezalako iturri ofizialetan kontrastatu beti alarma bat jaso aurretik. Ez birbidali kate-mezurik.</p>
+                        <p>Informazioa INCIBE bezalako iturri ofizialetan kontrastatu beti alarma bat jaso aurretik.</p>
                     </div>
+                </div>
+
+                <!-- IRITZIA PERTSONALA: UD3 -->
+                <div class="iritzia-card">
+                    <h3>💡 Kimetzen Hausnarketa (3. Gaia)</h3>
+                    <p>NotPetya edo WannaCry bezalako erasoek erakusten dute zibersegurtasuna jada ez dela soilik 'birus' kontu bat, baizik eta gerra teknologiko bat. Harrak (Worms) erabiltzeak, erabiltzailearen esku-hartzerik gabe hedatzeko, izugarrizko arriskua suposatzen du azpiegitura kritikoentzat eta enpresen biziraupenarentzat. Bestalde, Mamuak (Hoaxes) mehatxu inuzenteak diruditen arren, desinformazioaren eta Gizarte Ingeniaritzaren boterearen adibide garbia dira: erabiltzailea bera bihurtzen da bere sistemaren borrero.</p>
                 </div>
 
             </div>
@@ -663,24 +715,15 @@
 
     <!-- SCRIPT PARA GESTIONAR LAS PESTAÑAS (PÁGINAS SEPARADAS) -->
     <script>
-        function showTab(tabId) {
-            // Ocultar todas las secciones
+        function showTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(section => {
                 section.style.display = 'none';
             });
-            
-            // Quitar la clase 'active' de todos los botones del menú
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active');
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('active');
             });
-            
-            // Mostrar la sección clickeada
             document.getElementById(tabId).style.display = 'block';
-            
-            // Poner el botón clickeado como 'active'
-            event.target.classList.add('active');
-
-            // Volver arriba de la página suavemente
+            btn.classList.add('active');
             window.scrollTo(0, 0);
         }
     </script>
